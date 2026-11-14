@@ -4,525 +4,438 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#155eef">
+<meta name="description" content="Encontrá profesionales de confianza cerca tuyo.">
 <title>MiProfesional | Servicios cerca tuyo</title>
-
 <style>
-:root {
-  --blue: #155eef;
-  --dark: #123b83;
-  --orange: #f59e0b;
-  --ink: #172b4d;
-  --muted: #667085;
-  --bg: #f5f7fc;
-  --white: #ffffff;
-  --border: #e5eaf2;
-  --radius: 18px;
+:root{--blue:#155eef;--dark:#123b83;--orange:#f59e0b;--ink:#172b4d;--muted:#667085;--bg:#f5f7fc;--white:#fff;--border:#e5eaf2;--radius:20px;--shadow:0 14px 40px rgba(23,43,77,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0}
+a{text-decoration:none;color:inherit}
+.container{width:min(1120px,92%);margin:auto}
+header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20}
+.nav{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.logo{display:flex;align-items:center;gap:10px;color:var(--blue);font-size:22px;font-weight:850;letter-spacing:-.6px}
+.logo-icon{background:linear-gradient(135deg,#ffb52e,var(--orange));color:#fff;width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:23px;box-shadow:0 6px 14px #f59e0b40}
+.nav-actions{display:flex;gap:9px;align-items:center}
+.btn{padding:12px 18px;border-radius:12px;font-weight:750;display:inline-flex;align-items:center;justify-content:center;gap:7px;text-align:center;transition:transform .2s,box-shadow .2s,background .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn-blue{background:var(--blue);color:#fff;box-shadow:0 7px 17px #155eef30}
+.btn-orange{background:var(--orange);color:#fff;box-shadow:0 7px 17px #f59e0b35}
+.btn-light{background:#edf3ff;color:var(--blue)}
+.btn-outline{border:1px solid var(--border);background:#fff;color:var(--ink)}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.hero{position:relative;overflow:hidden;background:radial-gradient(circle at 85% 20%,#ffffff24 0 9%,transparent 10%),linear-gradient(125deg,#102f70,#155eef 70%,#2875f5);color:#fff;padding:76px 0 82px}
+.hero:before,.hero:after{content:"";position:absolute;border:1px solid #ffffff18;border-radius:50%;pointer-events:none}
+.hero:before{width:440px;height:440px;right:-130px;top:-220px}
+.hero:after{width:300px;height:300px;right:80px;bottom:-220px}
+.hero-content{max-width:800px;margin:auto;text-align:center;position:relative;z-index:1}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;background:#ffffff20;border:1px solid #ffffff30;padding:8px 14px;border-radius:30px;font-size:13px;font-weight:700;margin-bottom:20px}
+.hero h1{font-size:clamp(34px,5.4vw,54px);line-height:1.08;letter-spacing:-1.4px;margin-bottom:17px}
+.hero p{color:#e2eaff;line-height:1.7;font-size:16px;max-width:650px;margin:0 auto 30px}
+.search-box{background:#fff;border-radius:20px;padding:10px;display:grid;grid-template-columns:1fr 1fr auto;gap:9px;box-shadow:0 18px 45px #061d503d}
+.search-box input{width:100%;min-width:0;border:1px solid transparent;border-radius:12px;padding:15px;color:var(--ink);background:#f7f9fd;outline:none}
+.search-box input:focus{border-color:#9dbaff;background:#fff}
+.search-box button{min-width:135px}
+.trust-line{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:20px;color:#e4ecff;font-size:12px}
+.trust-line span{display:flex;align-items:center;gap:6px}
+section{padding:54px 0}
+.section-heading{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:24px}
+.section-heading h2{font-size:clamp(22px,3vw,29px);letter-spacing:-.5px;margin-bottom:5px}
+.section-heading p{color:var(--muted);font-size:14px}
+.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.category{background:#fff;border:1px solid var(--border);border-radius:18px;padding:22px 13px;text-align:center;transition:.2s;cursor:pointer;box-shadow:0 4px 15px #172b4d08}
+.category:hover{border-color:#9bb9ff;transform:translateY(-4px);box-shadow:var(--shadow)}
+.category .emoji{font-size:32px;margin-bottom:10px}
+.category strong{display:block;font-size:14px}
+.category small{display:block;color:var(--muted);margin-top:5px;font-size:12px}
+#profesionalesSection{background:#f0f4fb}
+.pro-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.pro-card{background:#fff;border:1px solid var(--border);border-radius:19px;overflow:hidden;box-shadow:0 5px 18px #172b4d08;transition:.2s}
+.pro-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.pro-photo{height:175px;background:linear-gradient(135deg,#dce8ff,#fce9c5);display:grid;place-items:center;overflow:hidden;font-size:55px;color:#155eef}
+.pro-photo img{width:100%;height:100%;object-fit:cover}
+.pro-info{padding:19px}
+.pro-info h3{font-size:18px;margin:7px 0 4px}
+.pro-info p{color:var(--muted);font-size:13px;margin:7px 0;line-height:1.55}
+.stars{color:#e9a000;font-size:15px;letter-spacing:1px}
+.pro-label{display:inline-block;background:#eaf2ff;color:var(--blue);padding:5px 9px;border-radius:20px;font-size:10px;font-weight:800;margin:0 5px 5px 0;letter-spacing:.25px}
+.pro-label.urgent-label{background:#fff2df;color:#a65d00}
+.pro-info .btn{width:100%;margin-top:12px}
+.empty{display:none;padding:28px;background:#fff;border:1px dashed #cbd6e8;border-radius:15px;color:var(--muted);text-align:center;grid-column:1/-1}
+.urgent{background:linear-gradient(115deg,#fff7e9,#fff);border:1px solid #ffdfaa;border-radius:24px;padding:32px;display:flex;justify-content:space-between;align-items:center;gap:20px;box-shadow:0 8px 25px #9b650d0b}
+.urgent h2{margin:8px 0;font-size:26px;letter-spacing:-.5px}
+.urgent p{color:#72522b;max-width:570px;margin-bottom:17px}
+.urgent-icon{font-size:55px;background:#ffedcf;width:90px;height:90px;border-radius:25px;display:grid;place-items:center;flex:none}
+.join{background:linear-gradient(120deg,#123b83,#155eef);color:#fff;border-radius:24px;padding:42px 25px;text-align:center;box-shadow:0 14px 35px #155eef25}
+.join h2{font-size:29px;margin-bottom:9px}
+.join p{color:#e3ebff;margin:0 auto 20px;max-width:550px}
+.join .btn{margin:4px}
+footer{background:#101f3b;color:#fff;padding:42px 0 20px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:28px;margin-bottom:28px}
+footer h3{margin-bottom:12px}
+footer p,footer a{color:#c4d0e5;font-size:14px;line-height:1.9}
+footer a{display:block}
+footer a:hover{color:#fff}
+.copyright{border-top:1px solid #34435e;padding-top:17px;text-align:center;color:#aebbd1;font-size:12px}
+.notice{padding:12px 14px;border-radius:10px;margin:12px 0;font-size:14px;display:none;line-height:1.45}
+.notice.error{display:block;background:#fff0f0;color:#a12626}
+.notice.success{display:block;background:#eaf8ef;color:#176b35}
+.notice.info{display:block;background:#edf3ff;color:#17479b}
+.modal-backdrop{position:fixed;inset:0;background:#0b173dcc;z-index:40;display:none;align-items:center;justify-content:center;padding:16px;overflow:auto}
+.modal-backdrop.open{display:flex}
+.modal{background:#fff;border-radius:20px;width:min(640px,100%);max-height:92vh;overflow:auto;padding:25px;box-shadow:0 20px 70px #0004}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:18px}
+.modal-head h2{font-size:22px;letter-spacing:-.3px}
+.close{background:#edf1f7;border-radius:10px;width:38px;height:38px;font-size:22px;color:var(--ink);flex:none}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.form-group label{font-size:13px;font-weight:750}
+.form-group input,.form-group select,.form-group textarea{border:1px solid var(--border);border-radius:11px;padding:12px;width:100%;background:#fff;color:var(--ink);outline:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#9bb9ff;box-shadow:0 0 0 3px #155eef12}
+.form-group textarea{min-height:100px;resize:vertical}
+.form-group.full{grid-column:1/-1}
+.checkline{display:flex;gap:9px;align-items:center;font-size:14px;margin:8px 0 14px}
+.checkline input{accent-color:var(--blue);width:17px;height:17px}
+.modal-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+.modal-actions .btn{flex:1}
+.muted{color:var(--muted);font-size:13px}
+.profile-detail{display:grid;grid-template-columns:145px 1fr;gap:18px;align-items:start}
+.profile-detail img{width:145px;height:145px;object-fit:cover;border-radius:17px;background:#edf3ff}
+.review{padding:14px;background:#f7f9fc;border:1px solid #edf0f5;border-radius:13px;margin-top:10px}
+.review strong{font-size:14px}
+.review p{font-size:13px;color:var(--muted);margin-top:5px}
+.hidden{display:none!important}
+@media(max-width:760px){
+ .nav{min-height:66px}.logo{font-size:19px}.nav-actions .btn{padding:9px 11px;font-size:12px}
+ .hero{padding:53px 0 58px}.hero h1{letter-spacing:-.7px}.hero p{font-size:14px}
+ .search-box{grid-template-columns:1fr;padding:9px;border-radius:16px}.search-box button{width:100%;min-height:48px}
+ .trust-line{gap:10px;font-size:11px}
+ section{padding:39px 0}.categories{grid-template-columns:repeat(2,1fr);gap:10px}
+ .category{padding:18px 8px}.pro-grid{grid-template-columns:1fr}.pro-photo{height:185px}
+ .section-heading{align-items:center}.section-heading h2{font-size:22px}
+ .urgent{padding:24px;align-items:flex-start}.urgent-icon{width:65px;height:65px;font-size:37px;border-radius:19px}
+ .join{padding:31px 18px}.footer-grid{grid-template-columns:1fr 1fr}.footer-grid>div:first-child{grid-column:1/-1}
+ .form-grid{grid-template-columns:1fr}.profile-detail{grid-template-columns:1fr}.profile-detail img{width:115px;height:115px}
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--ink);
-}
-button, input, select { font: inherit; }
-button { cursor: pointer; border: 0; }
-a { text-decoration: none; color: inherit; }
-
-.container {
-  width: min(1120px, 92%);
-  margin: auto;
-}
-header {
-  background: white;
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-.nav {
-  min-height: 72px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  color: var(--blue);
-  font-size: 22px;
-  font-weight: 800;
-}
-.logo-icon {
-  background: var(--orange);
-  color: white;
-  width: 39px;
-  height: 39px;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  font-size: 23px;
-}
-.nav-actions { display: flex; gap: 9px; align-items: center; }
-.btn {
-  padding: 12px 17px;
-  border-radius: 11px;
-  font-weight: 700;
-  display: inline-block;
-  text-align: center;
-  transition: .2s;
-}
-.btn:hover { transform: translateY(-2px); }
-.btn-blue { background: var(--blue); color: white; }
-.btn-orange { background: var(--orange); color: white; }
-.btn-light { background: #edf3ff; color: var(--blue); }
-
-.hero {
-  background: linear-gradient(125deg, #123b83, #155eef);
-  color: white;
-  padding: 65px 0 75px;
-}
-.hero-content { max-width: 750px; margin: auto; text-align: center; }
-.eyebrow {
-  display: inline-block;
-  background: rgba(255,255,255,.14);
-  padding: 8px 13px;
-  border-radius: 30px;
-  font-size: 13px;
-  margin-bottom: 20px;
-}
-.hero h1 {
-  font-size: clamp(32px, 5vw, 49px);
-  line-height: 1.12;
-  margin-bottom: 16px;
-}
-.hero p {
-  color: #e2eaff;
-  line-height: 1.6;
-  margin-bottom: 28px;
-}
-.search-box {
-  background: white;
-  border-radius: 17px;
-  padding: 10px;
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  gap: 9px;
-  box-shadow: 0 12px 35px rgba(0,0,0,.18);
-}
-.search-box input, .search-box select {
-  width: 100%;
-  min-width: 0;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 14px;
-  color: var(--ink);
-  background: white;
-  outline: none;
-}
-.search-box input:focus, .search-box select:focus {
-  border-color: var(--blue);
-}
-.search-box button { padding: 14px 22px; }
-
-section { padding: 52px 0; }
-.section-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: 15px;
-  margin-bottom: 25px;
-}
-.section-heading h2 { font-size: 25px; margin-bottom: 7px; }
-.section-heading p { color: var(--muted); font-size: 14px; }
-.section-heading a { color: var(--blue); font-weight: 700; font-size: 14px; }
-
-.categories {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-}
-.category {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 22px 10px;
-  text-align: center;
-  transition: .2s;
-  cursor: pointer;
-}
-.category:hover {
-  border-color: var(--blue);
-  transform: translateY(-3px);
-}
-.category .emoji { font-size: 32px; margin-bottom: 12px; }
-.category strong { display: block; font-size: 14px; }
-.category small { display: block; color: var(--muted); margin-top: 6px; }
-
-.pro-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-}
-.pro-card {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-.pro-photo {
-  height: 145px;
-  background: linear-gradient(135deg,#dce8ff,#fce9c5);
-  display: grid;
-  place-items: center;
-  font-size: 54px;
-}
-.pro-info { padding: 18px; }
-.pro-info h3 { font-size: 17px; margin-bottom: 7px; }
-.pro-info p { color: var(--muted); font-size: 13px; margin: 7px 0; }
-.stars { color: #f4a900; font-size: 16px; }
-.pro-label {
-  display: inline-block;
-  background: #eaf2ff;
-  color: var(--blue);
-  padding: 5px 9px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 700;
-  margin-bottom: 9px;
-}
-.pro-info .btn { width: 100%; margin-top: 10px; }
-
-.urgent {
-  background: #fff5e7;
-  border: 1px solid #ffdfaa;
-  border-radius: 22px;
-  padding: 32px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-}
-.urgent h2 { margin: 9px 0; font-size: 25px; }
-.urgent p { color: #72522b; line-height: 1.5; max-width: 570px; }
-.urgent-icon { font-size: 52px; }
-
-.join {
-  background: linear-gradient(120deg, #123b83, #155eef);
-  color: white;
-  border-radius: 22px;
-  padding: 38px;
-  text-align: center;
-}
-.join h2 { font-size: 27px; margin-bottom: 12px; }
-.join p { color: #e3ebff; margin-bottom: 22px; }
-.join .btn { margin: 5px; }
-
-footer {
-  background: #101f3b;
-  color: white;
-  padding: 38px 0 20px;
-}
-.footer-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 30px;
-  margin-bottom: 30px;
-}
-footer h3 { margin-bottom: 13px; }
-footer p, footer a { color: #c4d0e5; font-size: 14px; line-height: 1.8; }
-footer a { display: block; margin-bottom: 5px; }
-.copyright {
-  border-top: 1px solid #34435e;
-  padding-top: 18px;
-  text-align: center;
-  color: #aebbd1;
-  font-size: 12px;
-}
-.empty {
-  display: none;
-  padding: 20px;
-  background: white;
-  border-radius: 12px;
-  color: var(--muted);
-  text-align: center;
-  grid-column: 1 / -1;
-}
-
-@media(max-width:700px) {
-  .nav { min-height: 65px; }
-  .logo { font-size: 19px; }
-  .nav-actions { gap: 6px; }
-  .nav-actions .btn {
-    padding: 10px;
-    font-size: 12px;
-  }
-  .hero { padding: 48px 0 55px; }
-  .search-box { grid-template-columns: 1fr; }
-  .search-box button { width: 100%; }
-  section { padding: 38px 0; }
-  .categories { grid-template-columns: repeat(2,1fr); gap: 10px; }
-  .category { padding: 18px 8px; }
-  .pro-grid { grid-template-columns: 1fr; }
-  .pro-photo { height: 120px; }
-  .section-heading h2 { font-size: 21px; }
-  .urgent { padding: 24px; flex-direction: column; align-items: flex-start; }
-  .urgent-icon { display: none; }
-  .join { padding: 28px 18px; }
-  .join h2 { font-size: 23px; }
-  .footer-grid { grid-template-columns: 1fr 1fr; }
-  .footer-grid > div:first-child { grid-column: 1 / -1; }
-}
-@media(max-width:370px) {
-  .logo { font-size: 16px; }
-  .nav-actions .btn { padding: 8px; font-size: 11px; }
-}
+@media(max-width:390px){.logo{font-size:17px}.logo-icon{width:36px;height:36px}.nav-actions{gap:5px}.nav-actions .btn{padding:8px 9px}.footer-grid{grid-template-columns:1fr}.footer-grid>div:first-child{grid-column:auto}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-
 <body>
-
-<header>
-  <div class="container nav">
-    <a href="#" class="logo">
-      <span class="logo-icon">🔧</span>
-      MiProfesional
-    </a>
-    <div class="nav-actions">
-      <a href="#ingresar" class="btn btn-light">Ingresar</a>
-      <a href="#registro" class="btn btn-orange">Soy profesional</a>
-    </div>
+<header><div class="container nav">
+  <a href="#" class="logo"><span class="logo-icon">🔧</span>MiProfesional</a>
+  <div class="nav-actions">
+    <button class="btn btn-light" id="loginBtn">Ingresar</button>
+    <button class="btn btn-orange" id="registerBtn">Soy profesional</button>
+    <button class="btn btn-light hidden" id="myProfileBtn">Mi perfil</button>
+    <button class="btn btn-light hidden" id="logoutBtn">Salir</button>
   </div>
-</header>
-
+</div></header>
 <main>
-  <div class="hero">
-    <div class="container hero-content">
-      <span class="eyebrow">📍 Profesionales cerca tuyo</span>
-      <h1>Encontrá al profesional que necesitás</h1>
-      <p>Conectamos personas con profesionales de confianza.
-         Encontrá soluciones para tu hogar en tu localidad.</p>
+<div class="hero"><div class="container hero-content">
+  <span class="eyebrow">📍 Profesionales cerca tuyo</span>
+  <h1>Encontrá al profesional que necesitás</h1>
+  <p>Conectamos personas con profesionales de confianza. Encontrá soluciones para tu hogar en tu localidad.</p>
+  <form class="search-box" id="searchForm">
+    <input id="oficio" type="search" placeholder="¿Qué servicio necesitás?" aria-label="Servicio que necesitás">
+    <input id="localidad" type="text" placeholder="¿En qué localidad?" aria-label="Localidad">
+    <button class="btn btn-orange" type="submit">🔍 Buscar</button>
+  </form>
+  <div class="trust-line"><span>✓ Profesionales independientes</span><span>✓ Opiniones de clientes</span><span>✓ Contacto directo</span></div>
+</div></div>
 
-      <form class="search-box" id="searchForm">
-        <input id="oficio" type="search"
-          placeholder="¿Qué servicio necesitás?" />
-        <input id="localidad" type="text"
-          placeholder="¿En qué localidad?" />
-        <button class="btn btn-orange" type="submit">🔍 Buscar</button>
-      </form>
-    </div>
+<section><div class="container">
+  <div class="section-heading"><div><h2>¿Qué servicio necesitás?</h2><p>Elegí una categoría para comenzar.</p></div></div>
+  <div class="categories" id="categories">
+    <div class="category" data-category="electricista"><div class="emoji">⚡</div><strong>Electricistas</strong><small>Instalaciones y arreglos</small></div>
+    <div class="category" data-category="plomero"><div class="emoji">🚰</div><strong>Plomeros</strong><small>Agua y cañerías</small></div>
+    <div class="category" data-category="gasista"><div class="emoji">🔥</div><strong>Gasistas</strong><small>Instalaciones de gas</small></div>
+    <div class="category" data-category="refrigeracion"><div class="emoji">❄️</div><strong>Refrigeración</strong><small>Aires acondicionados</small></div>
+    <div class="category" data-category="pintor"><div class="emoji">🎨</div><strong>Pintores</strong><small>Pintura y renovación</small></div>
+    <div class="category" data-category="flete"><div class="emoji">🚚</div><strong>Fletes</strong><small>Traslados y mudanzas</small></div>
+    <div class="category" data-category="limpieza"><div class="emoji">🧹</div><strong>Limpieza</strong><small>Hogares y oficinas</small></div>
+    <div class="category" data-category="mantenimiento"><div class="emoji">🛠️</div><strong>Mantenimiento</strong><small>Arreglos del hogar</small></div>
   </div>
+</div></section>
 
-  <section>
-    <div class="container">
-      <div class="section-heading">
-        <div>
-          <h2>¿Qué servicio necesitás?</h2>
-          <p>Elegí una categoría para comenzar.</p>
-        </div>
-      </div>
+<section id="profesionalesSection"><div class="container">
+  <div class="section-heading"><div><h2>Profesionales</h2><p>Perfiles publicados en MiProfesional.</p></div><button class="btn btn-light" id="clearSearch">Ver todos</button></div>
+  <div class="pro-grid" id="profesionales"><div class="empty" id="empty">Todavía no hay perfiles publicados. ¡Pronto vas a encontrar profesionales cerca tuyo!</div></div>
+  <div class="notice" id="listNotice"></div>
+</div></section>
 
-      <div class="categories" id="categories">
-        <div class="category" data-category="electricista">
-          <div class="emoji">⚡</div>
-          <strong>Electricistas</strong>
-          <small>Instalaciones y arreglos</small>
-        </div>
-        <div class="category" data-category="plomero">
-          <div class="emoji">🚰</div>
-          <strong>Plomeros</strong>
-          <small>Agua y cañerías</small>
-        </div>
-        <div class="category" data-category="gasista">
-          <div class="emoji">🔥</div>
-          <strong>Gasistas</strong>
-          <small>Instalaciones de gas</small>
-        </div>
-        <div class="category" data-category="refrigeracion">
-          <div class="emoji">❄️</div>
-          <strong>Refrigeración</strong>
-          <small>Aires acondicionados</small>
-        </div>
-        <div class="category" data-category="pintor">
-          <div class="emoji">🎨</div>
-          <strong>Pintores</strong>
-          <small>Pintura y renovación</small>
-        </div>
-        <div class="category" data-category="flete">
-          <div class="emoji">🚚</div>
-          <strong>Fletes</strong>
-          <small>Traslados y mudanzas</small>
-        </div>
-        <div class="category" data-category="limpieza">
-          <div class="emoji">🧹</div>
-          <strong>Limpieza</strong>
-          <small>Hogares y oficinas</small>
-        </div>
-        <div class="category" data-category="mantenimiento">
-          <div class="emoji">🛠️</div>
-          <strong>Mantenimiento</strong>
-          <small>Arreglos del hogar</small>
-        </div>
-      </div>
-    </div>
-  </section>
+<section><div class="container"><div class="urgent">
+  <div><span class="pro-label urgent-label">ATENCIÓN PRIORITARIA</span><h2>¿Necesitás un servicio urgente?</h2><p>Encontrá profesionales que indiquen que trabajan con urgencias.</p><button class="btn btn-orange" id="urgentButton">🚨 Buscar servicio urgente</button></div><div class="urgent-icon">🚨</div>
+</div></div></section>
 
-  <section>
-    <div class="container">
-      <div class="section-heading">
-        <div>
-          <h2>Profesionales destacados</h2>
-          <p>Conocé algunos perfiles de demostración.</p>
-        </div>
-        <a href="#profesionales">Ver todos →</a>
-      </div>
-
-      <div class="pro-grid" id="profesionales">
-        <article class="pro-card" data-category="electricista">
-          <div class="pro-photo">👨‍🔧</div>
-          <div class="pro-info">
-            <span class="pro-label">PERFIL DE EJEMPLO</span>
-            <h3>Electricista</h3>
-            <div class="stars">★★★★★</div>
-            <p>📍 Zona Norte</p>
-            <p>Instalaciones y mantenimiento eléctrico.</p>
-            <a href="#contacto" class="btn btn-blue">Consultar</a>
-          </div>
-        </article>
-
-        <article class="pro-card" data-category="plomero">
-          <div class="pro-photo">👨‍🔧</div>
-          <div class="pro-info">
-            <span class="pro-label">PERFIL DE EJEMPLO</span>
-            <h3>Plomero</h3>
-            <div class="stars">★★★★★</div>
-            <p>📍 Zona Norte</p>
-            <p>Reparaciones y mantenimiento de cañerías.</p>
-            <a href="#contacto" class="btn btn-blue">Consultar</a>
-          </div>
-        </article>
-
-        <article class="pro-card" data-category="refrigeracion">
-          <div class="pro-photo">🧰</div>
-          <div class="pro-info">
-            <span class="pro-label">PERFIL DE EJEMPLO</span>
-            <h3>Técnico en refrigeración</h3>
-            <div class="stars">★★★★★</div>
-            <p>📍 Zona Norte</p>
-            <p>Servicio técnico de aire acondicionado.</p>
-            <a href="#contacto" class="btn btn-blue">Consultar</a>
-          </div>
-        </article>
-
-        <div class="empty" id="empty">
-          No encontramos perfiles para esa búsqueda.
-          Probá con otra categoría o localidad.
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="container">
-      <div class="urgent">
-        <div>
-          <span class="pro-label">ATENCIÓN PRIORITARIA</span>
-          <h2>¿Necesitás un servicio urgente?</h2>
-          <p>Encontrá profesionales que indiquen disponibilidad
-             para atender trabajos prioritarios.</p>
-          <a href="#buscar-urgente" class="btn btn-orange"
-             id="urgentButton">Buscar servicio urgente</a>
-        </div>
-        <div class="urgent-icon">🚨</div>
-      </div>
-    </div>
-  </section>
-
-  <section id="registro">
-    <div class="container">
-      <div class="join">
-        <h2>¿Sos profesional?</h2>
-        <p>Mostrá tus servicios, conseguí nuevos clientes
-           y hacé crecer tu trabajo.</p>
-        <a href="#registro" class="btn btn-orange">Publicar mi servicio</a>
-        <a href="#registro" class="btn btn-light">Crear mi perfil</a>
-      </div>
-    </div>
-  </section>
+<section id="registro"><div class="container"><div class="join">
+  <h2>¿Sos profesional?</h2><p>Mostrá tus servicios, conseguí nuevos clientes y hacé crecer tu trabajo.</p>
+  <button class="btn btn-orange" id="publishBtn">Publicar mi servicio</button>
+</div></div></section>
 </main>
 
-<footer id="contacto">
-  <div class="container">
-    <div class="footer-grid">
-      <div>
-        <h3>🔧 MiProfesional</h3>
-        <p>Conectamos clientes con profesionales
-           independientes de Zona Norte y alrededores.</p>
-      </div>
-      <div>
-        <h3>Plataforma</h3>
-        <a href="#">Inicio</a>
-        <a href="#profesionales">Profesionales</a>
-        <a href="#registro">Publicar servicio</a>
-      </div>
-      <div>
-        <h3>Contacto</h3>
-        <a href="#contacto">Consultas generales</a>
-        <a href="#registro">Quiero registrarme</a>
-      </div>
+<footer id="contacto"><div class="container">
+  <div class="footer-grid"><div><h3>🔧 MiProfesional</h3><p>Conectamos clientes con profesionales independientes de Zona Norte y alrededores.</p></div>
+  <div><h3>Plataforma</h3><a href="#">Inicio</a><a href="#profesionalesSection">Profesionales</a><a href="#registro">Publicar servicio</a></div>
+  <div><h3>Contacto</h3><a href="mailto:contacto@miprofesional.com">Contacto por correo</a><a href="#registro">Quiero registrarme</a></div></div>
+  <div class="copyright">© 2026 MiProfesional. Todos los derechos reservados.</div>
+</div></footer>
+
+<div class="modal-backdrop" id="authModal"><div class="modal">
+  <div class="modal-head"><h2 id="authTitle">Ingresar</h2><button class="close" data-close="authModal" aria-label="Cerrar">×</button></div>
+  <div class="notice" id="authNotice"></div>
+  <form id="authForm">
+    <div class="form-group"><label for="authEmail">Correo electrónico</label><input class="field" id="authEmail" type="email" required autocomplete="email"></div>
+    <div class="form-group"><label for="authPassword">Contraseña</label><input class="field" id="authPassword" type="password" required minlength="6" autocomplete="current-password"></div>
+    <div class="form-group hidden" id="authNameGroup"><label for="authName">Tu nombre</label><input class="field" id="authName" autocomplete="name"></div>
+    <button class="btn btn-blue" id="authSubmit" type="submit" style="width:100%">Ingresar</button>
+  </form>
+  <p class="muted" style="margin-top:13px" id="authSwitchText">¿Todavía no tenés cuenta? <a href="#" id="switchAuth" style="color:#155eef;font-weight:bold">Registrate</a></p>
+</div></div>
+
+<div class="modal-backdrop" id="profileModal"><div class="modal">
+  <div class="modal-head"><h2 id="profileTitle">Crear mi perfil profesional</h2><button class="close" data-close="profileModal" aria-label="Cerrar">×</button></div>
+  <div class="notice" id="profileNotice"></div>
+  <form id="profileForm">
+    <div class="form-grid">
+      <div class="form-group full"><label for="pName">Nombre y apellido *</label><input class="field" id="pName" required maxlength="90"></div>
+      <div class="form-group"><label for="pTrade">Oficio *</label><select id="pTrade" class="field" required><option value="">Elegí tu oficio</option><option>Electricista</option><option>Plomero</option><option>Gasista</option><option>Técnico en refrigeración</option><option>Pintor</option><option>Flete</option><option>Limpieza</option><option>Mantenimiento</option><option>Albañil</option><option>Carpintero</option><option>Jardinero</option><option>Otro</option></select></div>
+      <div class="form-group"><label for="pLocality">Localidad *</label><input class="field" id="pLocality" required maxlength="90" placeholder="Ej. Don Torcuato"></div>
+      <div class="form-group"><label for="pPhone">Teléfono</label><input class="field" id="pPhone" type="tel" maxlength="30" placeholder="Ej. 1123456789"></div>
+      <div class="form-group"><label for="pWhatsapp">WhatsApp</label><input class="field" id="pWhatsapp" type="tel" maxlength="30" placeholder="Ej. 5491123456789"></div>
+      <div class="form-group full"><label for="pDescription">Descripción de tus servicios *</label><textarea id="pDescription" required maxlength="1200" placeholder="Contá qué trabajos realizás, tu experiencia y las zonas que cubrís."></textarea></div>
+      <div class="form-group full"><label for="pPhoto">Fotografía de perfil</label><input id="pPhoto" type="file" accept="image/png,image/jpeg,image/webp"><span class="muted">JPG, PNG o WebP. Máximo 4 MB.</span></div>
     </div>
-    <div class="copyright">
-      © 2026 MiProfesional. Todos los derechos reservados.
-    </div>
-  </div>
-</footer>
+    <label class="checkline"><input type="checkbox" id="pUrgent"> Trabajo con urgencias</label>
+    <label class="checkline"><input type="checkbox" id="pPublic" checked> Mostrar mi perfil públicamente</label>
+    <div class="modal-actions"><button type="submit" class="btn btn-blue" id="saveProfileBtn">Guardar perfil</button><button type="button" class="btn btn-light" data-close="profileModal">Cancelar</button></div>
+  </form>
+</div></div>
+
+<div class="modal-backdrop" id="detailModal"><div class="modal">
+  <div class="modal-head"><h2>Perfil profesional</h2><button class="close" data-close="detailModal" aria-label="Cerrar">×</button></div>
+  <div id="detailContent"></div>
+</div></div>
 
 <script>
-const cards = [...document.querySelectorAll(".pro-card")];
-const empty = document.getElementById("empty");
+/* CONFIGURACIÓN DEL PROYECTO SUPABASE MiProfesional */
+const SUPABASE_URL = "https://tnyctqskyrmjhgaedamo.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_eXG6PhmDm3wFENI6KeeK9g_CggUG0v8";
+const PHOTO_BUCKET = "professional-photos";
+const { createClient } = window.supabase;
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-function filtrar(categoria, localidad) {
-  let encontrados = 0;
-  cards.forEach(card => {
-    const coincide = !categoria ||
-      card.dataset.category.includes(categoria);
-    card.style.display = coincide ? "" : "none";
-    if (coincide) encontrados++;
-  });
-  empty.style.display = encontrados ? "none" : "block";
+let currentUser = null;
+let authMode = "login";
+let editingProfile = false;
+let cachedProfiles = [];
 
-  document.getElementById("profesionales")
-    .scrollIntoView({ behavior: "smooth" });
+const $ = id => document.getElementById(id);
+function showNotice(id,message,type="info"){const el=$(id);el.textContent=message;el.className="notice "+type}
+function clearNotice(id){const el=$(id);el.textContent="";el.className="notice"}
+function openModal(id){$(id).classList.add("open")}
+function closeModal(id){$(id).classList.remove("open")}
+document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>closeModal(b.dataset.close)));
+document.querySelectorAll(".modal-backdrop").forEach(bg=>bg.addEventListener("click",e=>{if(e.target===bg)bg.classList.remove("open")}));
+function safe(value=""){return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function digits(value=""){return String(value).replace(/\D/g,"")}
+function whatsappUrl(number){let n=digits(number);if(n.startsWith("0"))n=n.slice(1);if(n&&!n.startsWith("54"))n="54"+n;return n?"https://wa.me/"+n:"#"}
+function stars(rating){const n=Math.max(0,Math.min(5,Math.round(Number(rating)||0)));return "★".repeat(n)+"☆".repeat(5-n)}
+function setLoggedIn(user){
+  currentUser=user;
+  $("loginBtn").classList.toggle("hidden",!!user);
+  $("registerBtn").classList.toggle("hidden",!!user);
+  $("myProfileBtn").classList.toggle("hidden",!user);
+  $("logoutBtn").classList.toggle("hidden",!user);
 }
+function authOpen(mode){
+  authMode=mode;clearNotice("authNotice");
+  $("authTitle").textContent=mode==="signup"?"Crear cuenta":"Ingresar";
+  $("authSubmit").textContent=mode==="signup"?"Crear cuenta":"Ingresar";
+  $("authNameGroup").classList.toggle("hidden",mode!=="signup");
+  $("authName").required=mode==="signup";
+  $("authPassword").autocomplete=mode==="signup"?"new-password":"current-password";
+  $("authSwitchText").innerHTML=mode==="signup"?'¿Ya tenés cuenta? <a href="#" id="switchAuth" style="color:#155eef;font-weight:bold">Ingresá</a>':'¿Todavía no tenés cuenta? <a href="#" id="switchAuth" style="color:#155eef;font-weight:bold">Registrate</a>';
+  $("switchAuth").addEventListener("click",e=>{e.preventDefault();authOpen(authMode==="signup"?"login":"signup")});
+  openModal("authModal");
+}
+$("loginBtn").addEventListener("click",()=>authOpen("login"));
+$("registerBtn").addEventListener("click",()=>authOpen("signup"));
+$("publishBtn").addEventListener("click",()=>currentUser?openProfileForm():authOpen("signup"));
+$("myProfileBtn").addEventListener("click",()=>openProfileForm(true));
 
-document.getElementById("searchForm")
-  .addEventListener("submit", function(e) {
-    e.preventDefault();
-    const oficio = document.getElementById("oficio")
-      .value.trim().toLowerCase();
-    const localidad = document.getElementById("localidad")
-      .value.trim();
-
-    filtrar(oficio, localidad);
-  });
-
-document.querySelectorAll(".category").forEach(cat => {
-  cat.addEventListener("click", () => {
-    document.getElementById("oficio").value =
-      cat.dataset.category;
-    filtrar(cat.dataset.category, "");
-  });
+$("authForm").addEventListener("submit",async e=>{
+  e.preventDefault();clearNotice("authNotice");
+  const email=$("authEmail").value.trim(),password=$("authPassword").value;
+  $("authSubmit").disabled=true;
+  try{
+    if(authMode==="signup"){
+      const name=$("authName").value.trim();
+      const {data,error}=await supabaseClient.auth.signUp({email,password,options:{data:{full_name:name}}});
+      if(error)throw error;
+      if(data.session){
+        setLoggedIn(data.user);closeModal("authModal");openProfileForm(false,name);
+      }else{
+        showNotice("authNotice","Cuenta creada. Revisá tu correo para confirmar la dirección y después ingresá para crear tu perfil.","success");
+      }
+    }else{
+      const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+      if(error)throw error;
+      setLoggedIn(data.user);closeModal("authModal");
+      const {data:profile}=await supabaseClient.from("professional_profiles").select("id").eq("id",data.user.id).maybeSingle();
+      if(!profile)openProfileForm(false,data.user.user_metadata?.full_name||"");
+      await loadProfiles();
+    }
+  }catch(err){showNotice("authNotice",err.message||"No se pudo completar la operación.","error")}
+  finally{$("authSubmit").disabled=false}
 });
 
-document.getElementById("urgentButton")
-  .addEventListener("click", function(e) {
-    e.preventDefault();
-    document.getElementById("oficio").value = "";
-    alert("La solicitud de urgencias estará disponible cuando conectemos el sistema de profesionales.");
-  });
-</script>
+$("logoutBtn").addEventListener("click",async()=>{
+  const {error}=await supabaseClient.auth.signOut();
+  if(error){alert(error.message);return}
+  setLoggedIn(null);await loadProfiles();
+});
 
+async function openProfileForm(edit=false,name=""){
+  if(!currentUser){authOpen("signup");return}
+  editingProfile=edit;clearNotice("profileNotice");
+  $("profileTitle").textContent=edit?"Editar mi perfil":"Crear mi perfil profesional";
+  $("profileForm").reset();$("pPublic").checked=true;
+  if(edit){
+    const {data,error}=await supabaseClient.from("professional_profiles").select("*").eq("id",currentUser.id).maybeSingle();
+    if(error)showNotice("profileNotice",error.message,"error");
+    if(data){
+      $("pName").value=data.full_name||"";$("pTrade").value=data.trade||"";
+      $("pLocality").value=data.locality||"";$("pPhone").value=data.phone||"";
+      $("pWhatsapp").value=data.whatsapp||"";$("pDescription").value=data.description||"";
+      $("pUrgent").checked=!!data.accepts_urgent;$("pPublic").checked=data.is_public!==false;
+    }
+  }else{$("pName").value=name||currentUser.user_metadata?.full_name||""}
+  openModal("profileModal");
+}
+
+$("profileForm").addEventListener("submit",async e=>{
+  e.preventDefault();clearNotice("profileNotice");
+  if(!currentUser){showNotice("profileNotice","Ingresá a tu cuenta para guardar el perfil.","error");return}
+  const file=$("pPhoto").files[0];
+  if(file&&(file.size>4*1024*1024||!["image/jpeg","image/png","image/webp"].includes(file.type))){
+    showNotice("profileNotice","La foto debe ser JPG, PNG o WebP y pesar hasta 4 MB.","error");return
+  }
+  $("saveProfileBtn").disabled=true;
+  try{
+    let photoUrl=null;
+    const {data:old}=await supabaseClient.from("professional_profiles").select("photo_url").eq("id",currentUser.id).maybeSingle();
+    photoUrl=old?.photo_url||null;
+    if(file){
+      const ext=file.type==="image/png"?"png":file.type==="image/webp"?"webp":"jpg";
+      const path=currentUser.id+"/profile."+ext;
+      const {error:uploadError}=await supabaseClient.storage.from(PHOTO_BUCKET).upload(path,file,{upsert:true,contentType:file.type});
+      if(uploadError)throw uploadError;
+      const {data:urlData}=supabaseClient.storage.from(PHOTO_BUCKET).getPublicUrl(path);
+      photoUrl=urlData.publicUrl;
+    }
+    const profile={
+      id:currentUser.id,full_name:$("pName").value.trim(),trade:$("pTrade").value,
+      locality:$("pLocality").value.trim(),description:$("pDescription").value.trim(),
+      phone:$("pPhone").value.trim()||null,whatsapp:$("pWhatsapp").value.trim()||null,
+      accepts_urgent:$("pUrgent").checked,is_public:$("pPublic").checked,photo_url:photoUrl
+    };
+    const {error}=await supabaseClient.from("professional_profiles").upsert(profile,{onConflict:"id"});
+    if(error)throw error;
+    showNotice("profileNotice","¡Perfil guardado correctamente!","success");
+    await loadProfiles();
+    setTimeout(()=>closeModal("profileModal"),700);
+  }catch(err){showNotice("profileNotice",err.message||"No se pudo guardar el perfil.","error")}
+  finally{$("saveProfileBtn").disabled=false}
+});
+
+function renderCard(p,rating){
+  const photo=p.photo_url?`<img src="${safe(p.photo_url)}" alt="Foto de ${safe(p.full_name)}">`:"👤";
+  const urg=p.accepts_urgent?'<span class="pro-label urgent-label">ACEPTA URGENCIAS</span>':'';
+  return `<article class="pro-card"><div class="pro-photo">${photo}</div><div class="pro-info">
+    <span class="pro-label">${safe(p.trade)}</span>${urg}
+    <h3>${safe(p.full_name)}</h3><div class="stars">${stars(rating?.average_rating)} <span style="color:#667085;font-size:12px">${Number(rating?.average_rating||0).toFixed(1)} (${Number(rating?.total_reviews||0)})</span></div>
+    <p>📍 ${safe(p.locality)}</p><p>${safe((p.description||"").slice(0,115))}${(p.description||"").length>115?"…":""}</p>
+    <button class="btn btn-blue" onclick="showProfile('${safe(p.id)}')">Ver perfil</button></div></article>`;
+}
+
+async function loadProfiles(filters={}){
+  const grid=$("profesionales"),empty=$("empty"),notice=$("listNotice");
+  clearNotice("listNotice");
+  grid.innerHTML="";grid.appendChild(empty);empty.style.display="none";
+  let query=supabaseClient.from("professional_profiles").select("*").eq("is_public",true);
+  if(filters.trade)query=query.ilike("trade","%"+filters.trade+"%");
+  if(filters.locality)query=query.ilike("locality","%"+filters.locality+"%");
+  if(filters.urgent)query=query.eq("accepts_urgent",true);
+  const {data,error}=await query.order("full_name",{ascending:true});
+  if(error){showNotice("listNotice","No se pudieron cargar los perfiles: "+error.message,"error");empty.textContent="No se pudieron cargar los profesionales.";empty.style.display="block";return}
+  cachedProfiles=data||[];
+  if(!cachedProfiles.length){empty.textContent="No encontramos profesionales con esos criterios.";empty.style.display="block";return}
+  const ids=cachedProfiles.map(p=>p.id);
+  const {data:ratings}=await supabaseClient.from("professional_ratings").select("*").in("id",ids);
+  const map=new Map((ratings||[]).map(r=>[r.id,r]));
+  grid.innerHTML=cachedProfiles.map(p=>renderCard(p,map.get(p.id))).join("");
+}
+
+window.showProfile=async function(id){
+  const {data:p,error}=await supabaseClient.from("professional_profiles").select("*").eq("id",id).maybeSingle();
+  if(error||!p){alert("No se pudo encontrar ese perfil.");return}
+  const [{data:rating},{data:reviews}]=await Promise.all([
+    supabaseClient.from("professional_ratings").select("*").eq("id",id).maybeSingle(),
+    supabaseClient.from("professional_reviews").select("*").eq("professional_id",id).order("created_at",{ascending:false}).limit(30)
+  ]);
+  const photo=p.photo_url?`<img src="${safe(p.photo_url)}" alt="Foto de perfil">`:'<div style="width:145px;height:145px;border-radius:16px;background:#edf3ff;display:grid;place-items:center;font-size:55px">👤</div>';
+  const wa=p.whatsapp?`<a class="btn" style="background:#16a34a;color:#fff" target="_blank" rel="noopener" href="${safe(whatsappUrl(p.whatsapp))}">WhatsApp</a>`:"";
+  const tel=p.phone?`<a class="btn btn-blue" href="tel:${safe(p.phone)}">Llamar</a>`:"";
+  const reviewHtml=(reviews||[]).length?(reviews||[]).map(r=>`<div class="review"><strong>${safe(r.reviewer_name)}</strong><div class="stars">${stars(r.rating)}</div><p>${safe(r.comment)}</p></div>`).join(""):'<p class="muted">Todavía no tiene reseñas.</p>';
+  const canReview=currentUser&&currentUser.id!==p.id;
+  $("detailContent").innerHTML=`<div class="profile-detail">${photo}<div><h2>${safe(p.full_name)}</h2><p style="color:#667085">${safe(p.trade)} · 📍 ${safe(p.locality)}</p><div class="stars" style="margin:7px 0">${stars(rating?.average_rating)} <span style="color:#667085;font-size:13px">${Number(rating?.average_rating||0).toFixed(1)} · ${Number(rating?.total_reviews||0)} reseñas</span></div>${p.accepts_urgent?'<span class="pro-label urgent-label">ACEPTA URGENCIAS</span>':''}<div class="modal-actions">${wa}${tel}</div></div></div><hr style="border:0;border-top:1px solid #e5eaf2;margin:18px 0"><h3>Sobre mis servicios</h3><p style="margin:8px 0 18px;white-space:pre-wrap">${safe(p.description)}</p><h3>Opiniones de clientes</h3>${reviewHtml}
+  ${canReview?`<form id="reviewForm" style="margin-top:18px"><h3>Dejá tu opinión</h3><div class="form-group"><label for="reviewRating">Calificación</label><select id="reviewRating" class="field"><option value="5">★★★★★ - Excelente</option><option value="4">★★★★ - Muy bueno</option><option value="3">★★★ - Bueno</option><option value="2">★★ - Regular</option><option value="1">★ - Malo</option></select></div><div class="form-group"><label for="reviewComment">Comentario</label><textarea id="reviewComment" required maxlength="800" class="field" placeholder="Contá cómo fue tu experiencia"></textarea></div><button class="btn btn-blue" type="submit">Publicar opinión</button><div class="notice" id="reviewNotice"></div></form>`:(!currentUser?'<p class="muted" style="margin-top:15px">Ingresá para dejar una opinión.</p>':'')}`;
+  if(canReview)$("reviewForm").addEventListener("submit",async e=>{
+    e.preventDefault();const comment=$("reviewComment").value.trim();if(!comment)return;
+    const reviewerName=currentUser.user_metadata?.full_name||currentUser.email?.split("@")[0]||"Usuario";
+    const {error}=await supabaseClient.from("professional_reviews").insert({professional_id:id,reviewer_id:currentUser.id,reviewer_name:reviewerName,rating:Number($("reviewRating").value),comment});
+    if(error){showNotice("reviewNotice",error.code==="23505"?"Ya dejaste una opinión para este profesional.":error.message,"error");return}
+    await showProfile(id);await loadProfiles();
+  });
+  openModal("detailModal");
+};
+
+$("searchForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  await loadProfiles({trade:$("oficio").value.trim(),locality:$("localidad").value.trim()});
+  $("profesionalesSection").scrollIntoView({behavior:"smooth"});
+});
+document.querySelectorAll(".category").forEach(c=>c.addEventListener("click",()=>{
+  $("oficio").value=c.dataset.category;
+  loadProfiles({trade:c.dataset.category});
+  $("profesionalesSection").scrollIntoView({behavior:"smooth"});
+}));
+$("clearSearch").addEventListener("click",()=>{
+  $("oficio").value="";$("localidad").value="";loadProfiles();
+});
+$("urgentButton").addEventListener("click",()=>{
+  $("oficio").value="";$("localidad").value="";
+  loadProfiles({urgent:true});
+  $("profesionalesSection").scrollIntoView({behavior:"smooth"});
+});
+
+async function init(){
+  try{
+    const {data:{session},error}=await supabaseClient.auth.getSession();
+    if(error)throw error;
+    setLoggedIn(session?.user||null);
+    supabaseClient.auth.onAuthStateChange((_event,session)=>{setLoggedIn(session?.user||null)});
+    await loadProfiles();
+  }catch(err){
+    showNotice("listNotice","No se pudo iniciar la plataforma: "+(err.message||"Error de conexión."),"error");
+  }
+}
+init();
+</script>
 </body>
-  </html>
+</html>
   
