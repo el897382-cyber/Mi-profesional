@@ -362,21 +362,89 @@ function renderCard(p,rating){
     <button class="btn btn-blue" onclick="showProfile('${safe(p.id)}')">Ver perfil</button></div></article>`;
 }
 
-async function loadProfiles(filters={}){
-  const grid=$("profesionales"),empty=$("empty"),notice=$("listNotice");
+
+async function loadProfiles(filters={}) {
+  const grid=$("profesionales");
+  const empty=$("empty");
+
   clearNotice("listNotice");
-  grid.innerHTML="";grid.appendChild(empty);empty.style.display="none";
-  let query=supabaseClient.from("professional_profiles").select("*").eq("is_public",true);
-  if(filters.trade)query=query.ilike("trade","%"+filters.trade+"%");
-  if(filters.locality)query=query.ilike("locality","%"+filters.locality+"%");
-  if(filters.urgent)query=query.eq("accepts_urgent",true);
+  grid.innerHTML="";
+  grid.appendChild(empty);
+  empty.style.display="none";
+
+  let query=supabaseClient
+    .from("professional_profiles")
+    .select("*")
+    .eq("is_public",true);
+
+  if(filters.trade)
+    query=query.ilike("trade","%"+filters.trade+"%");
+
+  if(filters.locality)
+    query=query.ilike("locality","%"+filters.locality+"%");
+
+  if(filters.urgent)
+    query=query.eq("accepts_urgent",true);
+
   const {data,error}=await query.order("full_name",{ascending:true});
-  if(error){showNotice("listNotice","No se pudieron cargar los perfiles: "+error.message,"error");empty.textContent="No se pudieron cargar los profesionales.";empty.style.display="block";return}
+
+  if(error) {
+    console.error(error);
+    showNotice("listNotice","No se pudieron cargar los perfiles: "+error.message,"error");
+    empty.textContent="No se pudieron cargar los profesionales.";
+    empty.style.display="block";
+    return;
+  }
+
   cachedProfiles=data||[];
-  if(!cachedProfiles.length){empty.textContent="No encontramos profesionales con esos criterios.";empty.style.display="block";return}
+
+  if(!cachedProfiles.length) {
+    empty.textContent="No encontramos profesionales con esos criterios.";
+    empty.style.display="block";
+    return;
+  }
+
   const ids=cachedProfiles.map(p=>p.id);
-  const {data:ratings}=await supabaseClient.from("professional_ratings").select("*").in("id",ids);
-  const map=new Map((ratings||[]).map(r=>[r.id,r]));
+
+  const {data:reviews,error:reviewsError}=await supabaseClient
+    .from("professional_reviews")
+    .select("professional_id,rating")
+    .in("professional_id",ids);
+
+  if(reviewsError) {
+    console.error("Error al cargar opiniones:",reviewsError);
+  }
+
+  const map=new Map();
+
+  (reviews||[]).forEach(r=>{
+    const current=map.get(r.professional_id)||{
+      average_rating:0,
+      total_reviews:0,
+      sum:0
+    };
+
+    current.sum+=Number(r.rating);
+    current.total_reviews++;
+    current.average_rating=current.sum/current.total_reviews;
+
+    map.set(r.professional_id,current);
+  });
+
+  grid.innerHTML=cachedProfiles
+    .map(p=>renderCard(p,map.get(p.id)))
+    .join("");
+ }
+ 
+if(ratingsError){
+  console.error("Error al cargar opiniones:",ratingsError);
+ }
+  const map=new Map();
+(ratings||[]).forEach(r=>{
+  const current=map.get(r.professional_id)||[];
+  current.push(r);
+  map.set(r.professional_id,current);
+});
   grid.innerHTML=cachedProfiles.map(p=>renderCard(p,map.get(p.id))).join("");
 }
 
