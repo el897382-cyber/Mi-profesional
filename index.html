@@ -436,17 +436,7 @@ async function loadProfiles(filters={}) {
     .join("");
  }
  
-if(ratingsError){
-  console.error("Error al cargar opiniones:",ratingsError);
- }
-  const map=new Map();
-(ratings||[]).forEach(r=>{
-  const current=map.get(r.professional_id)||[];
-  current.push(r);
-  map.set(r.professional_id,current);
-});
-  grid.innerHTML=cachedProfiles.map(p=>renderCard(p,map.get(p.id))).join("");
-}
+
 
 window.showProfile=async function(id){
   const {data:p,error}=await supabaseClient.from("professional_profiles").select("*").eq("id",id).maybeSingle();
