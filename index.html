@@ -472,16 +472,13 @@ document.querySelectorAll(".category").forEach(c=>c.addEventListener("click",()=
   loadProfiles({trade:c.dataset.category});
   $("profesionalesSection").scrollIntoView({behavior:"smooth"});
 }));
+
 $("clearSearch").addEventListener("click",async()=>{
   $("oficio").value="";
   $("localidad").value="";
-
-  console.log("Buscando todos los profesionales");
-
   await loadProfiles({});
 });
-  $("oficio").value="";$("localidad").value="";loadProfiles();
-});
+ 
 $("urgentButton").addEventListener("click",()=>{
   $("oficio").value="";$("localidad").value="";
   loadProfiles({urgent:true});
