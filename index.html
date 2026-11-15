@@ -274,7 +274,14 @@ $("authForm").addEventListener("submit",async e=>{
   try{
     if(authMode==="signup"){
       const name=$("authName").value.trim();
-      const {data,error}=await supabaseClient.auth.signUp({email,password,options:{data:{full_name:name}}});
+      const {data,error}=await supabaseClient.auth.signUp({
+  email,
+  password,
+  options:{
+    emailRedirectTo:"https://el897382-cyber.github.io/Mi-profesional/",
+    data:{full_name:name}
+  }
+});
       if(error)throw error;
       if(data.session){
         setLoggedIn(data.user);closeModal("authModal");openProfileForm(false,name);
