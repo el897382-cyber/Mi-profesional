@@ -448,10 +448,29 @@ async function loadProfiles(filters={}) {
 window.showProfile=async function(id){
   const {data:p,error}=await supabaseClient.from("professional_profiles").select("*").eq("id",id).maybeSingle();
   if(error||!p){alert("No se pudo encontrar ese perfil.");return}
-  const [{data:rating},{data:reviews}]=await Promise.all([
-    supabaseClient.from("professional_ratings").select("*").eq("id",id).maybeSingle(),
-    supabaseClient.from("professional_reviews").select("*").eq("professional_id",id).order("created_at",{ascending:false}).limit(30)
-  ]);
+  
+const {data:reviews,error:reviewsError}=await supabaseClient
+  .from("professional_reviews")
+  .select("*")
+  .eq("professional_id",id)
+  .order("created_at",{ascending:false})
+  .limit(30);
+
+if(reviewsError){
+  console.error("Error al cargar opiniones:",reviewsError);
+}
+
+const totalReviews=(reviews||[]).length;
+
+const averageRating=totalReviews
+  ? (reviews||[]).reduce((sum,r)=>sum+Number(r.rating||0),0)/totalReviews
+  : 0;
+
+const rating={
+  average_rating:averageRating,
+  total_reviews:totalReviews
+};
+ 
   const photo=p.photo_url?`<img src="${safe(p.photo_url)}" alt="Foto de perfil">`:'<div style="width:145px;height:145px;border-radius:16px;background:#edf3ff;display:grid;place-items:center;font-size:55px">👤</div>';
   const wa=p.whatsapp?`<a class="btn" style="background:#16a34a;color:#fff" target="_blank" rel="noopener" href="${safe(whatsappUrl(p.whatsapp))}">WhatsApp</a>`:"";
   const tel=p.phone?`<a class="btn btn-blue" href="tel:${safe(p.phone)}">Llamar</a>`:"";
