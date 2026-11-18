@@ -377,12 +377,18 @@ function renderCard(p,rating){
 
 async function loadProfiles(filters={}) {
   const grid=$("profesionales");
-  const empty=$("empty");
+let empty=$("empty");
 
-  clearNotice("listNotice");
-  grid.innerHTML="";
-  grid.appendChild(empty);
-  empty.style.display="none";
+if(!empty){
+  empty=document.createElement("div");
+  empty.id="empty";
+  empty.className="empty";
+}
+
+clearNotice("listNotice");
+grid.innerHTML="";
+grid.appendChild(empty);
+empty.style.display="none";
 
   let query=supabaseClient
     .from("professional_profiles")
