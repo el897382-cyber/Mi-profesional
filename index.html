@@ -406,7 +406,6 @@ empty.style.display="none";
 
   const {data,error}=await query.order("full_name",{ascending:true});
 
-alert("Consulta terminada");
 
 if(error) {
   alert("Error de Supabase: " + error.message);
