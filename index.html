@@ -491,6 +491,7 @@ const rating={
   openModal("detailModal");
 };
 
+
 $("searchForm").addEventListener("submit",async e=>{
   e.preventDefault();
 
@@ -514,21 +515,18 @@ $("searchForm").addEventListener("submit",async e=>{
   }
 });
 
-  alert("2. La búsqueda terminó");
-
-  $("profesionalesSection").scrollIntoView({behavior:"smooth"});
-});
-alert("La búsqueda terminó");
 document.querySelectorAll(".category").forEach(c=>c.addEventListener("click",()=>{
   $("oficio").value=c.dataset.category;
   loadProfiles({trade:c.dataset.category});
   $("profesionalesSection").scrollIntoView({behavior:"smooth"});
 }));
+
 $("clearSearch").addEventListener("click",async()=>{
   $("oficio").value="";
   $("localidad").value="";
   await loadProfiles({});
-}); 
+});
+ 
  
 $("urgentButton").addEventListener("click",()=>{
   $("oficio").value="";$("localidad").value="";
