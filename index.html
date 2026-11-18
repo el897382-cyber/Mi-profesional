@@ -496,7 +496,16 @@ const rating={
 
 $("searchForm").addEventListener("submit",async e=>{
   e.preventDefault();
- await loadProfiles({trade:$("oficio").value.trim(),locality:$("localidad").value.trim()});
+
+  alert("1. El botón Buscar se ejecutó");
+
+  await loadProfiles({
+    trade:$("oficio").value.trim(),
+    locality:$("localidad").value.trim()
+  });
+
+  alert("2. La búsqueda terminó");
+
   $("profesionalesSection").scrollIntoView({behavior:"smooth"});
 });
 alert("La búsqueda terminó");
