@@ -499,6 +499,7 @@ $("searchForm").addEventListener("submit",async e=>{
  await loadProfiles({trade:$("oficio").value.trim(),locality:$("localidad").value.trim()});
   $("profesionalesSection").scrollIntoView({behavior:"smooth"});
 });
+alert("La búsqueda terminó");
 document.querySelectorAll(".category").forEach(c=>c.addEventListener("click",()=>{
   $("oficio").value=c.dataset.category;
   loadProfiles({trade:c.dataset.category});
@@ -509,7 +510,6 @@ $("clearSearch").addEventListener("click",async()=>{
   $("localidad").value="";
   await loadProfiles({});
 }); 
-
  
 $("urgentButton").addEventListener("click",()=>{
   $("oficio").value="";$("localidad").value="";
