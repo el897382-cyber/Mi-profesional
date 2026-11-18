@@ -399,15 +399,12 @@ async function loadProfiles(filters={}) {
     query=query.eq("accepts_urgent",true);
 
   const {data,error}=await query.order("full_name",{ascending:true});
-console.log("RESULTADOS DE BUSQUEDA:",data);
-console.log("ERROR DE BUSQUEDA:",error);
-  if(error) {
-    console.error(error);
-    showNotice("listNotice","No se pudieron cargar los perfiles: "+error.message,"error");
-    empty.textContent="No se pudieron cargar los profesionales.";
-    empty.style.display="block";
-    return;
-  }
+
+alert("Consulta terminada");
+
+if(error) {
+  alert("Error de Supabase: " + error.message);
+ }
 
   cachedProfiles=data||[];
 
