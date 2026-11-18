@@ -495,7 +495,7 @@ const rating={
 
 $("searchForm").addEventListener("submit",async e=>{
   e.preventDefault();
-alert("El botón Buscar funciona");  
+  
 await loadProfiles({trade:$("oficio").value.trim(),locality:$("localidad").value.trim()});
   $("profesionalesSection").scrollIntoView({behavior:"smooth"});
 });
