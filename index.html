@@ -495,7 +495,8 @@ const rating={
 
 $("searchForm").addEventListener("submit",async e=>{
   e.preventDefault();
-  await loadProfiles({trade:$("oficio").value.trim(),locality:$("localidad").value.trim()});
+alert("El botón Buscar funciona");  
+await loadProfiles({trade:$("oficio").value.trim(),locality:$("localidad").value.trim()});
   $("profesionalesSection").scrollIntoView({behavior:"smooth"});
 });
 document.querySelectorAll(".category").forEach(c=>c.addEventListener("click",()=>{
@@ -503,7 +504,6 @@ document.querySelectorAll(".category").forEach(c=>c.addEventListener("click",()=
   loadProfiles({trade:c.dataset.category});
   $("profesionalesSection").scrollIntoView({behavior:"smooth"});
 }));
-
 $("clearSearch").addEventListener("click",async()=>{
   $("oficio").value="";
   $("localidad").value="";
