@@ -349,14 +349,7 @@ $("profileForm").addEventListener("submit",async e=>{
       const {data:urlData}=supabaseClient.storage.from(PHOTO_BUCKET).getPublicUrl(path);
       photoUrl=urlData.publicUrl;
     }
-    const profile={
-      id:currentUser.id,full_name:$("pName").value.trim(),trade:$("pTrade").value,
-      locality:$("pLocality").value.trim(),description:$("pDescription").value.trim(),
-      phone:$("pPhone").value.trim()||null,whatsapp:$("pWhatsapp").value.trim()||null,
-      accepts_urgent:$("pUrgent").checked,is_public:$("pPublic").checked,photo_url:photoUrl
-    };
-    const {error}=await supabaseClient.from("professional_profiles").upsert(profile,{onConflict:"id"});
-    if(error)throw error;
+    user_id:currentUser.id,
     showNotice("profileNotice","¡Perfil guardado correctamente!","success");
     await loadProfiles();
     setTimeout(()=>closeModal("profileModal"),700);
