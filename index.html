@@ -251,7 +251,8 @@ function whatsappUrl(number){let n=digits(number);if(n.startsWith("0"))n=n.slice
 function stars(rating){const n=Math.max(0,Math.min(5,Math.round(Number(rating)||0)));return "★".repeat(n)+"☆".repeat(5-n)}
 function setLoggedIn(user){
   currentUser=user;
-  $("loginBtn").classList.toggle("hidden",!!user);
+  console.log("Usuario conectado:", currentUser);
+$("loginBtn").classList.toggle("hidden",!!user);
   $("registerBtn").classList.toggle("hidden",!!user);
   $("myProfileBtn").classList.toggle("hidden",!user);
   $("logoutBtn").classList.toggle("hidden",!user);
@@ -271,7 +272,6 @@ $("loginBtn").addEventListener("click",()=>authOpen("login"));
 $("registerBtn").addEventListener("click",()=>authOpen("signup"));
 $("publishBtn").addEventListener("click",()=>currentUser?openProfileForm():authOpen("signup"));
 $("myProfileBtn").addEventListener("click",()=>openProfileForm(true));
-
 $("authForm").addEventListener("submit",async e=>{
   e.preventDefault();clearNotice("authNotice");
   const email=$("authEmail").value.trim(),password=$("authPassword").value;
