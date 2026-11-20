@@ -414,8 +414,12 @@ empty.style.display="none";
 
 
 if(error) {
-  alert("Error de Supabase: " + error.message);
- }
+  console.error("Error al cargar profesionales:",error);
+  showNotice("listNotice","Error al cargar profesionales: "+error.message,"error");
+  empty.textContent="No se pudieron cargar los profesionales.";
+  empty.style.display="block";
+  return;
+  }
 
   cachedProfiles=data||[];
 
