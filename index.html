@@ -312,12 +312,40 @@ function stars(rating) {
 }
 function setLoggedIn(user) {
   currentUser = user || null;
+  isAdmin = false;
+
   $("loginBtn").classList.toggle("hidden", !!currentUser);
   $("registerBtn").classList.toggle("hidden", !!currentUser);
   $("myProfileBtn").classList.toggle("hidden", !currentUser);
   $("logoutBtn").classList.toggle("hidden", !currentUser);
-}
 
+  checkAdminStatus();
+  }
+  async function checkAdminStatus() {
+  const userId = currentUser?.id;
+                                           
+  if (!userId) {
+    isAdmin = false;
+    return;
+  }
+
+  const { data, error } = await supabaseClient
+    .from("admin_users")
+    .select("user_id")
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  if (currentUser?.id !== userId) return;
+
+  if (error) {
+    console.error("Error verificando administrador:", error);
+    isAdmin = false;
+    return;
+  }
+
+  isAdmin = !!data;
+  console.log("¿Es administrador?", isAdmin);
+  }
 function authOpen(mode) {
   authMode = mode;
   clearNotice("authNotice");
