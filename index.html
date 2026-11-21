@@ -256,12 +256,13 @@ const { createClient } = window.supabase;
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let currentUser = null;
+let isAdmin = false;
 let authMode = "login";
 let editingProfile = false;
 let cachedProfiles = [];
-
+  
 const $ = id => document.getElementById(id);
-
+  
 function showNotice(id, message, type = "info") {
   const el = $(id);
   if (!el) return;
