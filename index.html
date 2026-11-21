@@ -145,7 +145,8 @@ footer a:hover{color:#fff}
     <button class="btn btn-orange" id="registerBtn">Soy profesional</button>
     <button class="btn btn-light hidden" id="myProfileBtn">Mi perfil</button>
     <button class="btn btn-light hidden" id="logoutBtn">Salir</button>
-  </div>
+   <button class="btn btn-orange hidden" id="adminBtn">Administración</button>
+</div>
 </div></header>
 <main>
 <div class="hero"><div class="container hero-content">
@@ -159,7 +160,6 @@ footer a:hover{color:#fff}
   </form>
   <div class="trust-line"><span>✓ Profesionales independientes</span><span>✓ Opiniones de clientes</span><span>✓ Contacto directo</span></div>
 </div></div>
-
 <section><div class="container">
   <div class="section-heading"><div><h2>¿Qué servicio necesitás?</h2><p>Elegí una categoría para comenzar.</p></div></div>
   <div class="categories" id="categories">
@@ -313,7 +313,7 @@ function stars(rating) {
 function setLoggedIn(user) {
   currentUser = user || null;
   isAdmin = false;
-
+$("adminBtn").classList.add("hidden");
   $("loginBtn").classList.toggle("hidden", !!currentUser);
   $("registerBtn").classList.toggle("hidden", !!currentUser);
   $("myProfileBtn").classList.toggle("hidden", !currentUser);
@@ -326,9 +326,10 @@ function setLoggedIn(user) {
                                            
   if (!userId) {
     isAdmin = false;
+  $("adminBtn").classList.add("hidden");
     return;
   }
-
+    
   const { data, error } = await supabaseClient
     .from("admin_users")
     .select("user_id")
@@ -340,10 +341,11 @@ function setLoggedIn(user) {
   if (error) {
     console.error("Error verificando administrador:", error);
     isAdmin = false;
+  $("adminBtn").classList.add("hidden");
     return;
   }
-
-  isAdmin = !!data;
+ isAdmin = !!data;
+  $("adminBtn").classList.toggle("hidden", !isAdmin);
   console.log("¿Es administrador?", isAdmin);
   }
 function authOpen(mode) {
