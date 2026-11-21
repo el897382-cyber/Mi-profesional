@@ -500,7 +500,9 @@ $("profileForm").addEventListener("submit", async event => {
 
     // Cada perfil tiene su propio ID; user_id vincula el perfil con la cuenta.
     const profileData = {
-      user_id: currentUser.id,
+  id: currentUser.id,
+  user_id: currentUser.id,
+
       full_name: $("pName").value.trim(),
       trade: $("pTrade").value,
       locality: $("pLocality").value.trim(),
