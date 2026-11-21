@@ -495,7 +495,7 @@ $("profileForm").addEventListener("submit", async event => {
       const { data: publicUrlData } = supabaseClient.storage
         .from(PHOTO_BUCKET)
         .getPublicUrl(storagePath);
-      photoUrl = publicUrlData.publicUrl;
+      photoUrl = publicUrlData.publicUrl + "?v=" + Date.now();
     }
 
     // Cada perfil tiene su propio ID; user_id vincula el perfil con la cuenta.
