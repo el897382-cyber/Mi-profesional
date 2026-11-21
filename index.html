@@ -649,7 +649,50 @@ async function loadProfiles(filters = {}) {
     .map(profile => renderCard(profile, ratingMap.get(profile.id)))
     .join("");
 }
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[char]);
+  }
+  async function loadAdminProfiles() {
+  const container = $("adminProfiles");
+              
+  if (!isAdmin) {
+    container.textContent = "No tenés permiso para acceder.";
+    return;
+  }
 
+  container.textContent = "Cargando profesionales...";
+
+  const { data, error } = await supabaseClient
+    .from("professional_profiles")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error cargando panel:", error);
+    container.textContent = "Error al cargar profesionales: " + error.message;
+    return;
+  }
+
+  if (!data || !data.length) {
+    container.textContent = "Todavía no hay profesionales registrados.";
+    return;
+  }
+
+  container.innerHTML = data.map(profile => `
+    <div class="offer-card" style="margin-bottom:12px;padding:14px;">
+      <h3>${escapeHtml(profile.full_name || "Sin nombre")}</h3>
+      <p>${escapeHtml(profile.trade || "")} - ${escapeHtml(profile.locality || "")}</p>
+      <p>Estado: ${escapeHtml(profile.approval_status || "Sin estado")}</p>
+      <p>Visibilidad: ${profile.is_public ? "Público" : "Oculto"}</p>
+    </div>
+  `).join("");
+  }
 window.showProfile = async function (id) {
   const { data: profile, error } = await supabaseClient
     .from("professional_profiles")
