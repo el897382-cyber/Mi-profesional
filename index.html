@@ -371,7 +371,11 @@ $("loginBtn").addEventListener("click", () => authOpen("login"));
 $("registerBtn").addEventListener("click", () => authOpen("signup"));
 $("publishBtn").addEventListener("click", () => currentUser ? openProfileForm() : authOpen("signup"));
 $("myProfileBtn").addEventListener("click", () => openProfileForm(true));
-
+$("adminBtn").addEventListener("click", () => {
+  if (!isAdmin) return;
+  $("adminPanel").classList.add("open");
+  loadAdminProfiles();
+});
 $("authForm").addEventListener("submit", async event => {
   event.preventDefault();
   clearNotice("authNotice");
