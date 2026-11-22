@@ -681,8 +681,6 @@ function escapeHtml(value) {
   }
   
 
-  
-
 async function loadAdminProfiles() {
   const container = $("adminProfiles");
 
@@ -715,9 +713,66 @@ async function loadAdminProfiles() {
       <p>${escapeHtml(profile.trade || "")} - ${escapeHtml(profile.locality || "")}</p>
       <p>Estado: ${escapeHtml(profile.approval_status || "Sin estado")}</p>
       <p>Visibilidad: ${profile.is_public ? "Público" : "Oculto"}</p>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+        <button class="btn btn-blue" data-admin-action="approve" data-id="${escapeHtml(String(profile.id))}">Aprobar</button>
+        <button class="btn" data-admin-action="reject" data-id="${escapeHtml(String(profile.id))}">Rechazar</button>
+        <button class="btn" data-admin-action="visibility" data-id="${escapeHtml(String(profile.id))}">
+          ${profile.is_public ? "Ocultar" : "Mostrar"}
+        </button>
+      </div>
     </div>
   `).join("");
+
+  container.querySelectorAll("[data-admin-action]").forEach(button => {
+    button.addEventListener("click", async () => {
+      if (!isAdmin) return;
+
+      const id = button.dataset.id;
+      const action = button.dataset.adminAction;
+      const profile = data.find(item => String(item.id) === id);
+
+      if (!profile) return;
+
+      let changes = {};
+
+      if (action === "approve") {
+        changes = { approval_status: "approved" };
+      } else if (action === "reject") {
+        changes = { approval_status: "rejected" };
+      } else if (action === "visibility") {
+        changes = { is_public: !profile.is_public };
+      }
+
+      button.disabled = true;
+
+      const { data: updatedRows, error: updateError } = await supabaseClient
+        .from("professional_profiles")
+        .update(changes)
+        .eq("id", id)
+        .select("id");
+
+      if (updateError) {
+        alert("No se pudo actualizar: " + updateError.message);
+        button.disabled = false;
+        return;
+      }
+
+      if (!updatedRows || updatedRows.length === 0) {
+        alert("No se modificó el perfil. Hay que revisar los permisos de Supabase.");
+        button.disabled = false;
+        return;
+      }
+
+      alert("¡Perfil actualizado!");
+      await loadAdminProfiles();
+    });
+  });
   }
+  
+  
+
+
   
   
 window.showProfile = async function (id) {
