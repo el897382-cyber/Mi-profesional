@@ -680,58 +680,8 @@ function escapeHtml(value) {
   })[char]);
   }
   
-async function loadAdminProfiles() {
-  const container = $("adminProfiles");
 
-  if (!isAdmin) {
-    container.textContent = "No tenés permiso para acceder.";
-    return;
-  }
-
-  container.textContent = "Cargando profesionales...";
-
-  const { data, error } = await supabaseClient
-    .from("professional_profiles")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Error cargando panel:", error);
-    container.textContent = "Error al cargar profesionales: " + error.message;
-    return;
-  }
-
-  if (!data || !data.length) {
-    container.textContent = "Todavía no hay profesionales registrados.";
-    return;
-  }
-
-  container.innerHTML = data.map(profile => `
-    <div class="offer-card" style="margin-bottom:12px;padding:14px;">
-      <h3>${escapeHtml(profile.full_name || "Sin nombre")}</h3>
-      <p>${escapeHtml(profile.trade || "")} - ${escapeHtml(profile.locality || "")}</p>
-      <p>Estado: ${escapeHtml(profile.approval_status || "Sin estado")}</p>
-      <p>Visibilidad: ${profile.is_public ? "Público" : "Oculto"}</p>
-
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-        <button class="btn btn-blue" data-admin-action="approve" data-id="${escapeHtml(String(profile.id))}">
-          Aprobar
-        </button>
-
-        <button class="btn" data-admin-action="reject" data-id="${escapeHtml(String(profile.id))}">
-          Rechazar
-        </button>
-
-        <button class="btn" data-admin-action="visibility" data-id="${escapeHtml(String(profile.id))}">
-          ${profile.is_public ? "Ocultar" : "Mostrar"}
-        </button>
-      </div>
-    </div>
-  `).join("");
-
-  container.querySelectorAll("[data-admin-action]").forEach(button => {
-    button.addEventListener("click", async () => {
-      if (!isAdmin) return;
+  
 
 async function loadAdminProfiles() {
   const container = $("adminProfiles");
