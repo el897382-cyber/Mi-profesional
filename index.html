@@ -733,51 +733,42 @@ async function loadAdminProfiles() {
     button.addEventListener("click", async () => {
       if (!isAdmin) return;
 
-      const id = button.dataset.id;
-      const action = button.dataset.adminAction;
+async function loadAdminProfiles() {
+  const container = $("adminProfiles");
 
-      button.disabled = true;
-
-      let changes = {};
-
-      if (action === "approve") {
-        changes = { approval_status: "approved" };
-      } else if (action === "reject") {
-        changes = { approval_status: "rejected" };
-      } else if (action === "visibility") {
-        const profile = data.find(item => String(item.id) === id);
-        if (!profile) return;
-        changes = { is_public: !profile.is_public };
-      }
-
-      
-const { data: updatedRows, error } = await supabaseClient
-  .from("professional_profiles")
-  .update(changes)
-  .eq("id", id)
-  .select("id");
-
-if (error) {
-  console.error("Error actualizando profesional:", error);
-  alert("Error de Supabase: " + error.message);
-  button.disabled = false;
-  return;
-}
-
-if (!updatedRows || updatedRows.length === 0) {
-  alert("No se modificó ningún perfil. Hay que revisar los permisos RLS.");
-  button.disabled = false;
-  return;
-}
-
-alert("¡Perfil actualizado correctamente!");
-  
-      }
-
-      await loadAdminProfiles();
-    });
-  });
+  if (!isAdmin) {
+    container.textContent = "No tenés permiso para acceder.";
+    return;
   }
+
+  container.textContent = "Cargando profesionales...";
+
+  const { data, error } = await supabaseClient
+    .from("professional_profiles")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error cargando panel:", error);
+    container.textContent = "Error al cargar profesionales: " + error.message;
+    return;
+  }
+
+  if (!data || !data.length) {
+    container.textContent = "Todavía no hay profesionales registrados.";
+    return;
+  }
+
+  container.innerHTML = data.map(profile => `
+    <div class="offer-card" style="margin-bottom:12px;padding:14px;">
+      <h3>${escapeHtml(profile.full_name || "Sin nombre")}</h3>
+      <p>${escapeHtml(profile.trade || "")} - ${escapeHtml(profile.locality || "")}</p>
+      <p>Estado: ${escapeHtml(profile.approval_status || "Sin estado")}</p>
+      <p>Visibilidad: ${profile.is_public ? "Público" : "Oculto"}</p>
+    </div>
+  `).join("");
+  }
+  
   
 window.showProfile = async function (id) {
   const { data: profile, error } = await supabaseClient
