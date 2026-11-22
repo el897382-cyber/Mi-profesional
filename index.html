@@ -750,16 +750,28 @@ async function loadAdminProfiles() {
         changes = { is_public: !profile.is_public };
       }
 
-      const { error } = await supabaseClient
-        .from("professional_profiles")
-        .update(changes)
-        .eq("id", id);
+      
+const { data: updatedRows, error } = await supabaseClient
+  .from("professional_profiles")
+  .update(changes)
+  .eq("id", id)
+  .select("id");
 
-      if (error) {
-        console.error("Error actualizando profesional:", error);
-        alert("No se pudo actualizar: " + error.message);
-        button.disabled = false;
-        return;
+if (error) {
+  console.error("Error actualizando profesional:", error);
+  alert("Error de Supabase: " + error.message);
+  button.disabled = false;
+  return;
+}
+
+if (!updatedRows || updatedRows.length === 0) {
+  alert("No se modificó ningún perfil. Hay que revisar los permisos RLS.");
+  button.disabled = false;
+  return;
+}
+
+alert("¡Perfil actualizado correctamente!");
+  
       }
 
       await loadAdminProfiles();
