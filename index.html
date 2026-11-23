@@ -681,19 +681,7 @@ function escapeHtml(value) {
   }
   
 
-async function loadAdminProfiles() {
-  const container = $("adminProfiles");
 
-  if (!isAdmin) {
-    container.textContent = "No tenés permiso para acceder.";
-    return;
-  }
-
-  container.textContent = "Cargando profesionales...";
-
-  const { data, error } = await supabaseClient
-    .from("professional_profiles")
-    .select("*")
 
 async function loadAdminProfiles(activeFilter = "all") {
   const container = $("adminProfiles");
