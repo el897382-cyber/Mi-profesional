@@ -694,6 +694,20 @@ async function loadAdminProfiles() {
   const { data, error } = await supabaseClient
     .from("professional_profiles")
     .select("*")
+
+async function loadAdminProfiles(activeFilter = "all") {
+  const container = $("adminProfiles");
+
+  if (!isAdmin) {
+    container.textContent = "No tenés permiso para acceder.";
+    return;
+  }
+
+  container.textContent = "Cargando profesionales...";
+
+  const { data, error } = await supabaseClient
+    .from("professional_profiles")
+    .select("*")
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -702,35 +716,97 @@ async function loadAdminProfiles() {
     return;
   }
 
-  if (!data || !data.length) {
-    container.textContent = "Todavía no hay profesionales registrados.";
-    return;
-  }
+  const profiles = data || [];
 
-  container.innerHTML = data.map(profile => `
-    <div class="offer-card" style="margin-bottom:12px;padding:14px;">
-      <h3>${escapeHtml(profile.full_name || "Sin nombre")}</h3>
-      <p>${escapeHtml(profile.trade || "")} - ${escapeHtml(profile.locality || "")}</p>
-      <p>Estado: ${escapeHtml(profile.approval_status || "Sin estado")}</p>
-      <p>Visibilidad: ${profile.is_public ? "Público" : "Oculto"}</p>
+  const counts = {
+    all: profiles.length,
+    pending: profiles.filter(p => p.approval_status === "pending").length,
+    approved: profiles.filter(p => p.approval_status === "approved").length,
+    rejected: profiles.filter(p => p.approval_status === "rejected").length
+  };
 
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-        <button class="btn btn-blue" data-admin-action="approve" data-id="${escapeHtml(String(profile.id))}">Aprobar</button>
-        <button class="btn" data-admin-action="reject" data-id="${escapeHtml(String(profile.id))}">Rechazar</button>
-        <button class="btn" data-admin-action="visibility" data-id="${escapeHtml(String(profile.id))}">
-          ${profile.is_public ? "Ocultar" : "Mostrar"}
+  const filters = [
+    { id: "all", label: "Todos" },
+    { id: "pending", label: "Pendientes" },
+    { id: "approved", label: "Aprobados" },
+    { id: "rejected", label: "Rechazados" }
+  ];
+
+  const filteredProfiles = activeFilter === "all"
+    ? profiles
+    : profiles.filter(p => p.approval_status === activeFilter);
+
+  container.innerHTML = `
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;">
+      ${filters.map(filter => `
+        <button
+          class="${activeFilter === filter.id ? "btn btn-blue" : "btn"}"
+          data-admin-filter="${filter.id}"
+          type="button">
+          ${filter.label} (${counts[filter.id]})
         </button>
-      </div>
+      `).join("")}
     </div>
-  `).join("");
 
+    <div id="adminProfilesList">
+      ${filteredProfiles.length === 0
+        ? `<p class="muted">No hay profesionales en esta categoría.</p>`
+        : filteredProfiles.map(profile => `
+          <div class="offer-card" style="margin-bottom:12px;padding:14px;">
+            <h3>${escapeHtml(profile.full_name || "Sin nombre")}</h3>
+
+            <p>${escapeHtml(profile.trade || "")} - ${escapeHtml(profile.locality || "")}</p>
+
+            <p>Estado: ${escapeHtml(profile.approval_status || "Sin estado")}</p>
+
+            <p>Visibilidad: ${profile.is_public ? "Público" : "Oculto"}</p>
+
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+              <button
+                class="btn btn-blue"
+                data-admin-action="approve"
+                data-id="${escapeHtml(String(profile.id))}"
+                type="button">
+                Aprobar
+              </button>
+
+              <button
+                class="btn"
+                data-admin-action="reject"
+                data-id="${escapeHtml(String(profile.id))}"
+                type="button">
+                Rechazar
+              </button>
+
+              <button
+                class="btn"
+                data-admin-action="visibility"
+                data-id="${escapeHtml(String(profile.id))}"
+                type="button">
+                ${profile.is_public ? "Ocultar" : "Mostrar"}
+              </button>
+            </div>
+          </div>
+        `).join("")
+      }
+    </div>
+  `;
+
+  // Eventos de los filtros
+  container.querySelectorAll("[data-admin-filter]").forEach(button => {
+    button.addEventListener("click", () => {
+      loadAdminProfiles(button.dataset.adminFilter);
+    });
+  });
+
+  // Eventos de las acciones administrativas
   container.querySelectorAll("[data-admin-action]").forEach(button => {
     button.addEventListener("click", async () => {
       if (!isAdmin) return;
 
       const id = button.dataset.id;
       const action = button.dataset.adminAction;
-      const profile = data.find(item => String(item.id) === id);
+      const profile = profiles.find(item => String(item.id) === id);
 
       if (!profile) return;
 
@@ -765,10 +841,12 @@ async function loadAdminProfiles() {
       }
 
       alert("¡Perfil actualizado!");
-      await loadAdminProfiles();
+
+      await loadAdminProfiles(activeFilter);
     });
   });
-  }
+}                                                          
+  
   
   
 
