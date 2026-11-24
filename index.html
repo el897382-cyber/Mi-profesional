@@ -971,6 +971,7 @@ if (action === "details") {
   return;
       
 }                                                              
+      
       let changes = {};
 
       if (action === "approve") {
@@ -979,6 +980,8 @@ if (action === "details") {
         changes = { approval_status: "rejected" };
       } else if (action === "visibility") {
         changes = { is_public: !profile.is_public };
+      } else {
+        return;
       }
 
       button.disabled = true;
@@ -1006,7 +1009,9 @@ if (action === "details") {
       await loadAdminProfiles(activeFilter);
     });
   });
-}                                                          
+}                                                                   
+  
+                        
   
   
   
