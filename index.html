@@ -237,6 +237,19 @@ footer a:hover{color:#fff}
   </div>
   </div>
   
+<div class="modal-backdrop" id="adminProfileDetails">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Perfil del profesional</h2>
+      <button class="close" data-close="adminProfileDetails" aria-label="Cerrar">×</button>
+    </div>
+
+    <div id="adminProfileDetailsContent">
+      Cargando información...
+    </div>
+  </div>
+</div>
+  
                                                                                                                                                                             </div>
                                                                                                                                                                             
 <div class="modal-backdrop" id="profileModal"><div class="modal">
@@ -804,22 +817,43 @@ async function loadAdminProfiles(activeFilter = "all") {
       const profile = profiles.find(item => String(item.id) === id);
 
       if (!profile) return;
+
 if (action === "details") {
+  const detailsContainer = $("adminProfileDetailsContent");
+
   const photo = profile.photo_url
-    ? `<img src="${escapeHtml(profile.photo_url)}" alt="Foto del profesional" style="width:110px;height:110px;object-fit:cover;border-radius:50%;margin-bottom:12px;">`
-    : `<p class="muted">Sin foto de perfil</p>`;
+    ? `<img
+        src="${escapeHtml(profile.photo_url)}"
+        alt="Foto de ${escapeHtml(profile.full_name || "profesional")}"
+        style="width:130px;height:130px;object-fit:cover;border-radius:50%;display:block;margin:0 auto 18px;">
+      `
+    : `<p class="muted" style="text-align:center;">Sin foto de perfil</p>`;
 
-  alert(
-    `PERFIL COMPLETO\n\n` +
-    `Nombre: ${profile.full_name || "Sin nombre"}\n` +
-    `Oficio: ${profile.trade || "No especificado"}\n` +
-    `Localidad: ${profile.locality || "No especificada"}\n` +
-    `Descripción: ${profile.description || "Sin descripción"}\n` +
-    `Teléfono: ${profile.phone || "Sin teléfono"}`
-  );
+  detailsContainer.innerHTML = `
+    ${photo}
 
+    <h3 style="text-align:center;">
+      ${escapeHtml(profile.full_name || "Sin nombre")}
+    </h3>
+
+    <p><strong>Oficio:</strong> ${escapeHtml(profile.trade || "No especificado")}</p>
+
+    <p><strong>Localidad:</strong> ${escapeHtml(profile.locality || "No especificada")}</p>
+
+    <p><strong>Descripción:</strong></p>
+    <p>${escapeHtml(profile.description || "Sin descripción")}</p>
+
+    <p><strong>Teléfono:</strong> ${escapeHtml(profile.phone || "Sin teléfono")}</p>
+
+    <p><strong>Estado:</strong> ${escapeHtml(profile.approval_status || "Sin estado")}</p>
+
+    <p><strong>Visibilidad:</strong> ${profile.is_public ? "Público" : "Oculto"}</p>
+  `;
+
+  openModal("adminProfileDetails");
   return;
-  }
+      
+}                                                              
       let changes = {};
 
       if (action === "approve") {
