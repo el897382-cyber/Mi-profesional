@@ -360,7 +360,77 @@ function closeModal(id) {
   const el = $(id);
   if (el) el.classList.remove("open");
 }
-document.querySelectorAll("[data-close]").forEach(button => {
+let reportedProfileId = null;
+
+function openReportForm(profileId) {
+  if (!currentUser) {
+    alert("Tenés que iniciar sesión para denunciar un perfil.");
+    return;
+  }
+
+$("reportProfileForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  if (!currentUser || !reportedProfileId) {
+    alert("No se pudo identificar al usuario o al perfil.");
+    return;
+  }
+
+  const reason = $("reportReason").value;
+  const description = $("reportDescription").value.trim();
+
+  if (!reason) {
+    $("reportStatus").textContent = "Seleccioná un motivo.";
+    return;
+  }
+
+  const submitButton = $("reportProfileForm").querySelector(
+    'button[type="submit"]'
+  );
+
+  const status = $("reportStatus");
+
+  submitButton.disabled = true;
+  submitButton.textContent = "Enviando...";
+  status.textContent = "";
+
+  const { error } = await supabaseClient
+    .from("profile_reports")
+    .insert({
+      profile_id: reportedProfileId,
+      reporter_id: currentUser.id,
+      reason: reason,
+      description: description || null,
+      status: "pending"
+    });
+
+  submitButton.disabled = false;
+  submitButton.textContent = "Enviar denuncia";
+
+  if (error) {
+    console.error("Error al enviar denuncia:", error);
+    status.textContent = "No se pudo enviar la denuncia. Intentá nuevamente.";
+    return;
+  }
+
+  status.textContent = "¡Denuncia enviada correctamente!";
+  $("reportProfileForm").reset();
+  reportedProfileId = null;
+});
+  
+  if (!profileId) return;
+
+  reportedProfileId = String(profileId);
+
+  const form = $("reportProfileForm");
+  if (form) form.reset();
+
+  const status = $("reportStatus");
+  if (status) status.textContent = "";
+
+  openModal("reportProfileModal");
+} 
+  document.querySelectorAll("[data-close]").forEach(button => {
   button.addEventListener("click", () => closeModal(button.dataset.close));
 });
 document.querySelectorAll(".modal-backdrop").forEach(backdrop => {
