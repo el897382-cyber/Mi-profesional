@@ -822,7 +822,8 @@ function escapeHtml(value) {
     "'": "&#039;"
   })[char]);
   }
-  async function loadAdminReports() {
+  
+async function loadAdminReports() {
   const container = $("adminReports");
 
   if (!isAdmin) {
@@ -867,39 +868,92 @@ function escapeHtml(value) {
 
       <h3>${escapeHtml(report.professional_profiles?.full_name || "Profesional sin nombre")}</h3>
 
-      <p>
-        <strong>Oficio:</strong>
+      <p><strong>Oficio:</strong>
         ${escapeHtml(report.professional_profiles?.trade || "No especificado")}
       </p>
 
-      <p>
-        <strong>Localidad:</strong>
+      <p><strong>Localidad:</strong>
         ${escapeHtml(report.professional_profiles?.locality || "No especificada")}
       </p>
 
-      <p>
-        <strong>Motivo:</strong>
+      <p><strong>Motivo:</strong>
         ${escapeHtml(report.reason)}
       </p>
 
-      <p>
-        <strong>Descripción:</strong>
+      <p><strong>Descripción:</strong>
         ${escapeHtml(report.description || "Sin descripción")}
       </p>
 
-      <p>
-        <strong>Estado:</strong>
+      <p><strong>Estado:</strong>
         ${escapeHtml(report.status)}
       </p>
 
-      <p>
-        <strong>Fecha:</strong>
+      <p><strong>Fecha:</strong>
         ${new Date(report.created_at).toLocaleString("es-AR")}
       </p>
 
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+
+        ${report.status !== "reviewed" ? `
+          <button
+            class="btn btn-blue"
+            data-report-action="reviewed"
+            data-id="${escapeHtml(String(report.id))}"
+            type="button">
+            Marcar como revisada
+          </button>
+        ` : ""}
+
+        ${report.status !== "dismissed" ? `
+          <button
+            class="btn"
+            data-report-action="dismissed"
+            data-id="${escapeHtml(String(report.id))}"
+            type="button">
+            Descartar denuncia
+          </button>
+        ` : ""}
+
+      </div>
     </div>
   `).join("");
+
+  container.querySelectorAll("[data-report-action]").forEach(button => {
+    button.addEventListener("click", async () => {
+      if (!isAdmin) return;
+
+      const id = button.dataset.id;
+      const newStatus = button.dataset.reportAction;
+
+      button.disabled = true;
+
+      const { data: updatedRows, error: updateError } = await supabaseClient
+        .from("profile_reports")
+        .update({ status: newStatus })
+        .eq("id", id)
+        .select("id");
+
+      if (updateError) {
+        console.error("Error actualizando denuncia:", updateError);
+        alert("No se pudo actualizar la denuncia: " + updateError.message);
+        button.disabled = false;
+        return;
+      }
+
+      if (!updatedRows || updatedRows.length === 0) {
+        alert("No se pudo modificar la denuncia. Revisá los permisos de Supabase.");
+        button.disabled = false;
+        return;
+      }
+
+      alert("¡Denuncia actualizada correctamente!");
+
+      await loadAdminReports();
+    });
+  });
   }
+  
+
 
 
 
