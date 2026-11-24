@@ -894,7 +894,7 @@ async function loadAdminReports() {
 
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
 
-        ${report.status !== "reviewed" ? `
+        ${report.status === "pending" ? `
           <button
             class="btn btn-blue"
             data-report-action="reviewed"
@@ -904,7 +904,7 @@ async function loadAdminReports() {
           </button>
         ` : ""}
 
-        ${report.status !== "dismissed" ? `
+        ${report.status === "pending" || report.status === "reviewed" ? `
           <button
             class="btn"
             data-report-action="dismissed"
