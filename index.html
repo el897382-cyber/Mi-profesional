@@ -932,6 +932,9 @@ window.showProfile = async function (id) {
   const phoneButton = profile.phone
     ? `<a class="btn btn-blue" href="tel:${safe(profile.phone)}">Llamar</a>`
     : "";
+const reportButton = currentUser && currentUser.id !== profile.user_id
+    ? `<button class="btn" type="button" onclick="openReportForm('${safe(String(profile.id))}')">Denunciar perfil</button>`
+    : "";
   const reviewHtml = reviewList.length
     ? reviewList.map(review => `<div class="review">
         <strong>${safe(review.reviewer_name || "Cliente")}</strong>
@@ -939,7 +942,7 @@ window.showProfile = async function (id) {
         <p>${safe(review.comment || "")}</p>
       </div>`).join("")
     : '<p class="muted">Todavía no tiene reseñas.</p>';
-
+    
   // El perfil guarda el ID de la cuenta en user_id.
   const canReview = !!currentUser && currentUser.id !== profile.user_id;
 
