@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+Ro<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -276,6 +276,53 @@ footer a:hover{color:#fff}
   <div id="detailContent"></div>
 </div></div>
 
+<!-- VENTANA DE DENUNCIAS -->
+<div class="modal-backdrop" id="reportProfileModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Denunciar perfil</h2>
+      <button class="close" data-close="reportProfileModal" aria-label="Cerrar">×</button>
+    </div>
+
+    <form id="reportProfileForm">
+
+      <div class="form-group">
+        <label for="reportReason">Motivo de la denuncia</label>
+        <select class="field" id="reportReason" required>
+          <option value="">Seleccioná un motivo</option>
+          <option value="Información falsa">Información falsa</option>
+          <option value="Teléfono incorrecto">Teléfono incorrecto</option>
+          <option value="Mal comportamiento">Mal comportamiento</option>
+          <option value="Servicio incumplido">Servicio incumplido</option>
+          <option value="Perfil sospechoso">Perfil sospechoso</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="reportDescription">
+          Contanos qué sucedió (opcional)
+        </label>
+        <textarea
+          class="field"
+          id="reportDescription"
+          rows="4"
+          maxlength="1000"
+          placeholder="Explicá brevemente el problema..."></textarea>
+      </div>
+
+      <p id="reportStatus" class="muted"></p>
+
+      <div class="modal-actions">
+        <button class="btn btn-blue" type="submit">
+          Enviar denuncia
+        </button>
+      </div>
+
+    </form>
+  </div>
+  </div>
+  
 <script>
 /* CONFIGURACIÓN DEL PROYECTO SUPABASE MiProfesional */
 const SUPABASE_URL = "https://tnyctqskyrmjhgaedamo.supabase.co";
@@ -956,8 +1003,11 @@ const reportButton = currentUser && currentUser.id !== profile.user_id
           <span style="color:#667085;font-size:13px">${averageRating.toFixed(1)} · ${reviewList.length} reseñas</span>
         </div>
         ${profile.accepts_urgent ? '<span class="pro-label urgent-label">ACEPTA URGENCIAS</span>' : ""}
-        <div class="modal-actions">${whatsappButton}${phoneButton}</div>
-      </div>
+        <div class="modal-actions">
+  ${whatsappButton}
+  ${phoneButton}
+  ${reportButton}
+</div>
     </div>
     <hr style="border:0;border-top:1px solid #e5eaf2;margin:18px 0">
     <h3>Sobre mis servicios</h3>
