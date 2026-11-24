@@ -232,10 +232,20 @@ footer a:hover{color:#fff}
     <p class="muted">Administrá los profesionales de MiProfesional.</p>
 
     <div id="adminProfiles">
-      Cargando profesionales...
-    </div>
-  </div>
-  </div>
+  Cargando profesionales...
+</div>
+
+<hr style="margin:25px 0;border:0;border-top:1px solid #e2e8f0;">
+
+<h2>Denuncias recibidas</h2>
+
+<p class="muted">
+  Revisá las denuncias enviadas por los usuarios sobre los profesionales.
+</p>
+
+<div id="adminReports">
+  Cargando denuncias...
+</div>
   
 <div class="modal-backdrop" id="adminProfileDetails">
   <div class="modal">
@@ -520,8 +530,11 @@ $("publishBtn").addEventListener("click", () => currentUser ? openProfileForm() 
 $("myProfileBtn").addEventListener("click", () => openProfileForm(true));
 $("adminBtn").addEventListener("click", () => {
   if (!isAdmin) return;
+
   $("adminPanel").classList.add("open");
+
   loadAdminProfiles();
+  loadAdminReports();
 });
 $("authForm").addEventListener("submit", async event => {
   event.preventDefault();
@@ -809,7 +822,84 @@ function escapeHtml(value) {
     "'": "&#039;"
   })[char]);
   }
-  
+  async function loadAdminReports() {
+  const container = $("adminReports");
+
+  if (!isAdmin) {
+    container.textContent = "No tenés permiso para acceder.";
+    return;
+  }
+
+  container.textContent = "Cargando denuncias...";
+
+  const { data, error } = await supabaseClient
+    .from("profile_reports")
+    .select(`
+      id,
+      profile_id,
+      reason,
+      description,
+      status,
+      created_at,
+      professional_profiles (
+        full_name,
+        trade,
+        locality
+      )
+    `)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error cargando denuncias:", error);
+    container.textContent = "Error al cargar denuncias: " + error.message;
+    return;
+  }
+
+  const reports = data || [];
+
+  if (reports.length === 0) {
+    container.textContent = "Todavía no hay denuncias recibidas.";
+    return;
+  }
+
+  container.innerHTML = reports.map(report => `
+    <div class="offer-card" style="margin-bottom:12px;padding:14px;">
+
+      <h3>${escapeHtml(report.professional_profiles?.full_name || "Profesional sin nombre")}</h3>
+
+      <p>
+        <strong>Oficio:</strong>
+        ${escapeHtml(report.professional_profiles?.trade || "No especificado")}
+      </p>
+
+      <p>
+        <strong>Localidad:</strong>
+        ${escapeHtml(report.professional_profiles?.locality || "No especificada")}
+      </p>
+
+      <p>
+        <strong>Motivo:</strong>
+        ${escapeHtml(report.reason)}
+      </p>
+
+      <p>
+        <strong>Descripción:</strong>
+        ${escapeHtml(report.description || "Sin descripción")}
+      </p>
+
+      <p>
+        <strong>Estado:</strong>
+        ${escapeHtml(report.status)}
+      </p>
+
+      <p>
+        <strong>Fecha:</strong>
+        ${new Date(report.created_at).toLocaleString("es-AR")}
+      </p>
+
+    </div>
+  `).join("");
+  }
 
 
 
