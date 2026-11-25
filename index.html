@@ -823,7 +823,7 @@ function escapeHtml(value) {
   })[char]);
   }
   
-async function loadAdminReports() {
+async function loadAdminReports(activeFilter = "all") {
   const container = $("adminReports");
 
   if (!isAdmin) {
@@ -858,66 +858,105 @@ async function loadAdminReports() {
 
   const reports = data || [];
 
-  if (reports.length === 0) {
-    container.textContent = "Todavía no hay denuncias recibidas.";
-    return;
-  }
+  const counts = {
+    all: reports.length,
+    pending: reports.filter(r => r.status === "pending").length,
+    reviewed: reports.filter(r => r.status === "reviewed").length,
+    dismissed: reports.filter(r => r.status === "dismissed").length
+  };
 
-  container.innerHTML = reports.map(report => `
-    <div class="offer-card" style="margin-bottom:12px;padding:14px;">
+  const filters = [
+    { id: "all", label: "Todas" },
+    { id: "pending", label: "Pendientes" },
+    { id: "reviewed", label: "Revisadas" },
+    { id: "dismissed", label: "Descartadas" }
+  ];
 
-      <h3>${escapeHtml(report.professional_profiles?.full_name || "Profesional sin nombre")}</h3>
+  const filteredReports = activeFilter === "all"
+    ? reports
+    : reports.filter(r => r.status === activeFilter);
 
-      <p><strong>Oficio:</strong>
-        ${escapeHtml(report.professional_profiles?.trade || "No especificado")}
-      </p>
-
-      <p><strong>Localidad:</strong>
-        ${escapeHtml(report.professional_profiles?.locality || "No especificada")}
-      </p>
-
-      <p><strong>Motivo:</strong>
-        ${escapeHtml(report.reason)}
-      </p>
-
-      <p><strong>Descripción:</strong>
-        ${escapeHtml(report.description || "Sin descripción")}
-      </p>
-
-      <p><strong>Estado:</strong>
-        ${escapeHtml(report.status)}
-      </p>
-
-      <p><strong>Fecha:</strong>
-        ${new Date(report.created_at).toLocaleString("es-AR")}
-      </p>
-
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-
-        ${report.status === "pending" ? `
-          <button
-            class="btn btn-blue"
-            data-report-action="reviewed"
-            data-id="${escapeHtml(String(report.id))}"
-            type="button">
-            Marcar como revisada
-          </button>
-        ` : ""}
-
-        ${report.status === "pending" || report.status === "reviewed" ? `
-          <button
-            class="btn"
-            data-report-action="dismissed"
-            data-id="${escapeHtml(String(report.id))}"
-            type="button">
-            Descartar denuncia
-          </button>
-        ` : ""}
-
-      </div>
+  container.innerHTML = `
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;">
+      ${filters.map(filter => `
+        <button
+          class="${activeFilter === filter.id ? "btn btn-blue" : "btn"}"
+          data-report-filter="${filter.id}"
+          type="button">
+          ${filter.label} (${counts[filter.id]})
+        </button>
+      `).join("")}
     </div>
-  `).join("");
 
+    <div id="adminReportsList">
+      ${filteredReports.length === 0
+        ? `<p class="muted">No hay denuncias en esta categoría.</p>`
+        : filteredReports.map(report => `
+          <div class="offer-card" style="margin-bottom:12px;padding:14px;">
+
+            <h3>${escapeHtml(report.professional_profiles?.full_name || "Profesional sin nombre")}</h3>
+
+            <p><strong>Oficio:</strong>
+              ${escapeHtml(report.professional_profiles?.trade || "No especificado")}
+            </p>
+
+            <p><strong>Localidad:</strong>
+              ${escapeHtml(report.professional_profiles?.locality || "No especificada")}
+            </p>
+
+            <p><strong>Motivo:</strong>
+              ${escapeHtml(report.reason)}
+            </p>
+
+            <p><strong>Descripción:</strong>
+              ${escapeHtml(report.description || "Sin descripción")}
+            </p>
+
+            <p><strong>Estado:</strong>
+              ${escapeHtml(report.status)}
+            </p>
+
+            <p><strong>Fecha:</strong>
+              ${new Date(report.created_at).toLocaleString("es-AR")}
+            </p>
+
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+
+              ${report.status === "pending" ? `
+                <button
+                  class="btn btn-blue"
+                  data-report-action="reviewed"
+                  data-id="${escapeHtml(String(report.id))}"
+                  type="button">
+                  Marcar como revisada
+                </button>
+              ` : ""}
+
+              ${report.status === "pending" || report.status === "reviewed" ? `
+                <button
+                  class="btn"
+                  data-report-action="dismissed"
+                  data-id="${escapeHtml(String(report.id))}"
+                  type="button">
+                  Descartar denuncia
+                </button>
+              ` : ""}
+
+            </div>
+          </div>
+        `).join("")
+      }
+    </div>
+  `;
+
+  // Eventos de los filtros
+  container.querySelectorAll("[data-report-filter]").forEach(button => {
+    button.addEventListener("click", () => {
+      loadAdminReports(button.dataset.reportFilter);
+    });
+  });
+
+  // Eventos de las acciones administrativas
   container.querySelectorAll("[data-report-action]").forEach(button => {
     button.addEventListener("click", async () => {
       if (!isAdmin) return;
@@ -946,14 +985,11 @@ async function loadAdminReports() {
         return;
       }
 
-      await loadAdminReports();
+      await loadAdminReports(activeFilter);
     });
   });
   }
   
-
-
-
 
 async function loadAdminProfiles(activeFilter = "all") {
   const container = $("adminProfiles");
