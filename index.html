@@ -134,7 +134,41 @@ footer a:hover{color:#fff}
  .form-grid{grid-template-columns:1fr}.profile-detail{grid-template-columns:1fr}.profile-detail img{width:115px;height:115px}
 }
 @media(max-width:390px){.logo{font-size:17px}.logo-icon{width:36px;height:36px}.nav-actions{gap:5px}.nav-actions .btn{padding:8px 9px}.footer-grid{grid-template-columns:1fr}.footer-grid>div:first-child{grid-column:auto}}
-</style>
+
+.specialty-category {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 12px;
+  background: #fff;
+}
+
+.specialty-category strong {
+  display: block;
+  margin-bottom: 10px;
+  color: #172b4d;
+}
+
+.specialty-category label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.specialty-category input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #155eef;
+   }
+  .pro-specialties {
+  color: #667085;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 7px 0;
+  }
+  </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -181,7 +215,7 @@ footer a:hover{color:#fff}
     <div class="category" data-category="peluquero"><div class="emoji">💇</div><strong>Peluqueros</strong><small>Corte y cuidado del cabello</small></div>
   </div>
 </div></section>
-
+      
 <section id="profesionalesSection"><div class="container">
   <div class="section-heading"><div><h2>Profesionales</h2><p>Perfiles publicados en MiProfesional.</p></div><button class="btn btn-light" id="clearSearch">Ver todos</button></div>
   <div class="pro-grid" id="profesionales"><div class="empty" id="empty">
@@ -259,17 +293,55 @@ footer a:hover{color:#fff}
     </div>
   </div>
 </div>
-  
-                                                                                                                                                                            </div>
-                                                                                                                                                                            
-<div class="modal-backdrop" id="profileModal"><div class="modal">
+  <div class="modal-backdrop" id="profileModal"><div class="modal">
   <div class="modal-head"><h2 id="profileTitle">Crear mi perfil profesional</h2><button class="close" data-close="profileModal" aria-label="Cerrar">×</button></div>
   <div class="notice" id="profileNotice"></div>
   <form id="profileForm">
     <div class="form-grid">
-      <div class="form-group full"><label for="pName">Nombre y apellido *</label><input class="field" id="pName" required maxlength="90"></div>
+      
+                                                                                                                                                                            </div>
+                                                                                                                                                                            
+<div class="form-group full"><label for="pName">Nombre y apellido *</label><input class="field" id="pName" required maxlength="90"></div>
       <div class="form-group"><label for="pTrade">Oficio *</label><select id="pTrade" class="field" required><option value="">Elegí tu oficio</option><option>Electricista</option><option>Plomero</option><option>Gasista</option><option>Técnico en refrigeración</option><option>Pintor</option><option>Flete</option><option>Limpieza</option><option>Mantenimiento</option><option>Albañil</option><option>Carpintero</option><option>Jardinero</option><option>Mecánico</option><option>Herrero</option><option>Tapicero</option><option>Barbero</option><option>Peluquero/a</option><option>Otro</option></select></div>
-      <div class="form-group"><label for="pLocality">Localidad *</label><input class="field" id="pLocality" required maxlength="90" placeholder="Ej. Don Torcuato"></div>
+      
+<div class="form-group full">
+  <label>Especialidades que ofrecés</label>
+  <p class="muted">Podés elegir varias especialidades de distintas categorías.</p>
+
+  <div class="specialty-category">
+    <strong>Electricidad</strong>
+    <label><input type="checkbox" name="specialties" value="Instalaciones eléctricas"> Instalaciones eléctricas</label>
+    <label><input type="checkbox" name="specialties" value="Reparaciones eléctricas"> Reparaciones eléctricas</label>
+    <label><input type="checkbox" name="specialties" value="Colocación de iluminación"> Colocación de iluminación</label>
+    <label><input type="checkbox" name="specialties" value="Instalación de tableros"> Instalación de tableros</label>
+    <label><input type="checkbox" name="specialties" value="Mantenimiento eléctrico"> Mantenimiento eléctrico</label>
+  </div>
+
+  <div class="specialty-category">
+    <strong>Plomería</strong>
+    <label><input type="checkbox" name="specialties" value="Reparación de pérdidas"> Reparación de pérdidas</label>
+    <label><input type="checkbox" name="specialties" value="Instalación de sanitarios"> Instalación de sanitarios</label>
+    <label><input type="checkbox" name="specialties" value="Destapaciones"> Destapaciones</label>
+    <label><input type="checkbox" name="specialties" value="Instalación de cañerías"> Instalación de cañerías</label>
+  </div>
+
+  <div class="specialty-category">
+    <strong>Gas</strong>
+    <label><input type="checkbox" name="specialties" value="Instalaciones de gas"> Instalaciones de gas</label>
+    <label><input type="checkbox" name="specialties" value="Reparaciones de gas"> Reparaciones de gas</label>
+    <label><input type="checkbox" name="specialties" value="Instalación de calefones"> Instalación de calefones</label>
+  </div>
+
+  <div class="specialty-category">
+    <strong>Refrigeración y climatización</strong>
+    <label><input type="checkbox" name="specialties" value="Instalación de aire acondicionado"> Instalación de aire acondicionado</label>
+    <label><input type="checkbox" name="specialties" value="Reparación de aire acondicionado"> Reparación de aire acondicionado</label>
+    <label><input type="checkbox" name="specialties" value="Reparación de heladeras"> Reparación de heladeras</label>
+    <label><input type="checkbox" name="specialties" value="Mantenimiento de equipos"> Mantenimiento de equipos</label>
+  </div>
+  </div>
+      
+<div class="form-group"><label for="pLocality">Localidad *</label><input class="field" id="pLocality" required maxlength="90" placeholder="Ej. Don Torcuato"></div>
       <div class="form-group"><label for="pPhone">Teléfono</label><input class="field" id="pPhone" type="tel" maxlength="30" placeholder="Ej. 1123456789"></div>
       <div class="form-group"><label for="pWhatsapp">WhatsApp</label><input class="field" id="pWhatsapp" type="tel" maxlength="30" placeholder="Ej. 5491123456789"></div>
       <div class="form-group full"><label for="pDescription">Descripción de tus servicios *</label><textarea id="pDescription" required maxlength="1200" placeholder="Contá qué trabajos realizás, tu experiencia y las zonas que cubrís."></textarea></div>
@@ -280,7 +352,6 @@ footer a:hover{color:#fff}
     <div class="modal-actions"><button type="submit" class="btn btn-blue" id="saveProfileBtn">Guardar perfil</button><button type="button" class="btn btn-light" data-close="profileModal">Cancelar</button></div>
   </form>
 </div></div>
-
 <div class="modal-backdrop" id="detailModal"><div class="modal">
   <div class="modal-head"><h2>Perfil profesional</h2><button class="close" data-close="detailModal" aria-label="Cerrar">×</button></div>
   <div id="detailContent"></div>
@@ -638,7 +709,11 @@ async function openProfileForm(edit = false, name = "") {
     } else {
       $("pName").value = data.full_name || "";
       $("pTrade").value = data.trade || "";
-      $("pLocality").value = data.locality || "";
+      document.querySelectorAll('input[name="specialties"]').forEach(input => {
+  input.checked = Array.isArray(data.specialties)
+    && data.specialties.includes(input.value);
+});
+$("pLocality").value = data.locality || "";
       $("pPhone").value = data.phone || "";
       $("pWhatsapp").value = data.whatsapp || "";
       $("pDescription").value = data.description || "";
@@ -649,8 +724,7 @@ async function openProfileForm(edit = false, name = "") {
     $("pName").value = name || currentUser.user_metadata?.full_name || "";
   }
   openModal("profileModal");
-}
-
+  }
 $("profileForm").addEventListener("submit", async event => {
   event.preventDefault();
   clearNotice("profileNotice");
@@ -700,7 +774,10 @@ $("profileForm").addEventListener("submit", async event => {
 
       full_name: $("pName").value.trim(),
       trade: $("pTrade").value,
-      locality: $("pLocality").value.trim(),
+      specialties: Array.from(
+  document.querySelectorAll('input[name="specialties"]:checked')
+).map(input => input.value),
+locality: $("pLocality").value.trim(),
       phone: $("pPhone").value.trim() || null,
       whatsapp: $("pWhatsapp").value.trim() || null,
       description: $("pDescription").value.trim(),
@@ -708,7 +785,6 @@ $("profileForm").addEventListener("submit", async event => {
       accepts_urgent: $("pUrgent").checked,
       is_public: $("pPublic").checked
     };
-
     const { error: saveError } = await supabaseClient
       .from("professional_profiles")
       .upsert(profileData, { onConflict: "user_id" });
@@ -735,12 +811,17 @@ function renderCard(profile, rating) {
     : "";
   const average = Number(rating?.average_rating || 0);
   const total = Number(rating?.total_reviews || 0);
-
+  const specialties = Array.isArray(profile.specialties) 
+   ? profile.specialties
+   : [];
   return `<article class="pro-card">
     <div class="pro-photo">${photo}</div>
     <div class="pro-info">
       <span class="pro-label">${safe(profile.trade)}</span>${urgentLabel}
-      <h3>${safe(profile.full_name)}</h3>
+${specialties.length
+  ? `<p class="pro-specialties">${specialties.map(item => safe(item)).join(" · ")}</p>`
+  : ""}
+<h3>${safe(profile.full_name)}</h3>
       <div class="stars">${stars(average)} <span style="color:#667085;font-size:12px">${average.toFixed(1)} (${total})</span></div>
       <p>📍 ${safe(profile.locality)}</p>
       <p>${safe((profile.description || "").slice(0, 115))}${(profile.description || "").length > 115 ? "…" : ""}</p>
