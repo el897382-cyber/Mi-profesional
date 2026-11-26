@@ -443,12 +443,26 @@ function closeModal(id) {
 }
 let reportedProfileId = null;
 
+
 function openReportForm(profileId) {
   if (!currentUser) {
     alert("Tenés que iniciar sesión para denunciar un perfil.");
     return;
   }
 
+  if (!profileId) return;
+
+  reportedProfileId = String(profileId);
+
+  const form = $("reportProfileForm");
+  if (form) form.reset();
+
+  const status = $("reportStatus");
+  if (status) status.textContent = "";
+
+  openModal("reportProfileModal");
+}   
+  
 $("reportProfileForm").addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -498,6 +512,8 @@ $("reportProfileForm").addEventListener("submit", async (event) => {
   $("reportProfileForm").reset();
   reportedProfileId = null;
 });
+
+
   
   if (!profileId) return;
 
