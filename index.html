@@ -538,20 +538,21 @@ function stars(rating) {
   const count = Math.max(0, Math.min(5, Math.round(Number(rating) || 0)));
   return "★".repeat(count) + "☆".repeat(5 - count);
 }
+
 function setLoggedIn(user) {
   currentUser = user || null;
   isAdmin = false;
-$("adminBtn").classList.add("hidden");
+
+  $("adminBtn").classList.add("hidden");
+
   $("loginBtn").classList.toggle("hidden", !!currentUser);
   $("registerBtn").classList.toggle("hidden", !!currentUser);
-  $("myProfileBtn").addEventListener("click", () => {
-  console.log("Se tocó Mi perfil");
-  openProfileForm(true);
-});
+  $("myProfileBtn").classList.toggle("hidden", !currentUser);
   $("logoutBtn").classList.toggle("hidden", !currentUser);
 
   checkAdminStatus();
   }
+  
   async function checkAdminStatus() {
   const userId = currentUser?.id;
                                            
