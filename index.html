@@ -544,7 +544,10 @@ function setLoggedIn(user) {
 $("adminBtn").classList.add("hidden");
   $("loginBtn").classList.toggle("hidden", !!currentUser);
   $("registerBtn").classList.toggle("hidden", !!currentUser);
-  $("myProfileBtn").classList.toggle("hidden", !currentUser);
+  $("myProfileBtn").addEventListener("click", () => {
+  console.log("Se tocó Mi perfil");
+  openProfileForm(true);
+});
   $("logoutBtn").classList.toggle("hidden", !currentUser);
 
   checkAdminStatus();
